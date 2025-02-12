@@ -1,0 +1,33 @@
+.loaderContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed !important;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--app-color-blue-d);
+	z-index: 500 !important;
+}
+
+.loader {
+	height: 45px;
+	aspect-ratio: 1.2;
+	--c: no-repeat repeating-linear-gradient(90deg, #fff 0 20%, #0000 0 40%);
+	background: var(--c) 50% 0, var(--c) 50% 100%;
+	background-size: calc(500% / 6) 50%;
+	animation: l10 1s infinite linear;
+}
+
+@keyframes l10 {
+	33% {
+		background-position: 0 0, 100% 100%;
+	}
+	66% {
+		background-position: 0 100%, 100% 0;
+	}
+	100% {
+		background-position: 50% 100%, 50% 0;
+	}
+}

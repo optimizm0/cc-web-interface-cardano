@@ -1,0 +1,608 @@
+.main {
+	height: 100%;
+}
+
+.pageContainer {
+	display: flex;
+	height: 100%;
+	width: 100%;
+}
+
+.pageContainer > div:first-of-type {
+	width: 100%;
+	overflow-x: hidden;
+}
+
+.pageContainer > div::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 0.7rem;
+}
+
+.pageContainer > div::-webkit-scrollbar:horizontal {
+	height: 0.313rem;
+}
+
+.pageContainer > div::-webkit-scrollbar-thumb {
+	border-radius: 0.313rem;
+	border: 0.125rem solid white;
+	background-color: var(--app-color-blue-d);
+}
+
+.pageContainer > div::-webkit-scrollbar-track {
+	background-color: var(--app-color-white-a);
+	border-radius: 0.313rem;
+}
+
+.pageHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 2rem 1rem 2rem 1rem;
+}
+
+.pageHeader h6 {
+	color: var(--app-color-gray-c);
+	font-weight: 500;
+	font-size: 0.875rem;
+	line-height: 1.138rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 0.2rem;
+}
+
+.connectedWalletButton {
+	display: none;
+}
+
+.propertyDetail {
+	padding: 2rem 1rem;
+}
+
+.backButton {
+	display: block;
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.arrow {
+	transform: scale(1.4);
+	margin-right: 0.5rem;
+	vertical-align: bottom;
+	transform: rotate(180deg);
+}
+
+.arrow > * {
+	fill: var(--app-color-black-a);
+}
+
+.headerText {
+	font-weight: 500;
+	font-size: 1rem;
+	line-height: 1.25rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	color: var(--app-color-blue-d);
+}
+
+.tabButtonsContainer {
+	position: relative;
+	display: inline-block;
+	background: var(--app-color-gray-i);
+	border-radius: 3.75rem;
+	padding: 0.4rem;
+	margin-top: 2.5rem;
+}
+
+.tabButtonsContainer button {
+	display: inline-block;
+	border-radius: 1.875rem;
+	padding: 1rem;
+	width: 8rem;
+	cursor: pointer;
+	border: none;
+	font-weight: 600;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.875rem;
+	line-height: 1.1rem;
+	color: var(--app-color-gray-d);
+	background: var(--app-color-gray-i);
+	transition: background 0.9s;
+}
+
+.tabButtonsContainer button.active {
+	background: var(--app-color-blue-b);
+	color: var(--app-color-white-a);
+}
+
+.tabButtonsContainer button:disabled {
+	cursor: not-allowed;
+}
+
+.toolTip {
+	position: absolute;
+	top: -1rem;
+	right: -5rem;
+	font-weight: 300;
+	font-size: 0.75rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	background: var(--app-color-blue-d);
+	color: var(--app-color-white-a);
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+}
+
+.propertyDetailContents {
+	display: flex;
+	flex-direction: column;
+	gap: 1.8rem;
+	margin-top: 3rem;
+}
+
+.gridItemOne {
+	width: 100%;
+}
+
+.gallery {
+	position: relative;
+	height: 21.75rem;
+	border-radius: 1.25rem;
+	background: var(--app-color-puprle-f);
+}
+
+.currentImage {
+	display: none;
+	width: 100%;
+	height: 100%;
+	border-radius: 1.25rem;
+	object-fit: cover;
+}
+
+.currentImage.active {
+	display: block;
+}
+
+.galleryControls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: absolute;
+	overflow: hidden;
+	left: 0;
+	right: 0;
+	bottom: 3rem;
+	padding: 0rem 0.5rem;
+}
+
+.galleryButtons button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	padding: 0.65rem;
+	border: none;
+	cursor: pointer;
+}
+
+.galleryButtons button svg * {
+	fill: var(--app-color-black-a);
+}
+
+.galleryButtons button:first-of-type {
+	transform: rotate(180deg);
+	margin-right: 1rem;
+}
+
+.thumnnail {
+	display: inline-block;
+	width: 2.875rem;
+	height: 2.875rem;
+	cursor: pointer;
+	border: 0.188rem solid var(--app-color-gray-a);
+	border-radius: 0.5rem;
+	background: var(--app-color-gray-a);
+}
+
+.thumnnail:not(:last-of-type) {
+	margin-right: 1rem;
+}
+
+.thumnnail img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.details {
+	margin: 2rem 0rem;
+}
+
+.detailsContent {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.propertyNameAndStatus {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin-bottom: 0.3rem;
+}
+
+.propertyName {
+	font-weight: 600;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 1.125rem;
+	line-height: 1.375rem;
+	color: var(--app-color-blue-d);
+}
+
+.status {
+	padding: 0.3rem;
+	font-weight: 700;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.5rem;
+	line-height: 0.688rem;
+	color: var(--app-color-blue-d);
+	background: var(--app-color-gray-g);
+	border-radius: 3.75rem;
+}
+
+.status::before {
+	display: inline-block;
+	width: 0.388rem;
+	height: 0.388rem;
+	content: "";
+	background: var(--app-color-blue-d);
+	margin-right: 0.4rem;
+	border-radius: 50%;
+}
+
+.address {
+	font-weight: 400;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.75rem;
+	line-height: 0.938rem;
+	color: var(--app-color-gray-f);
+}
+
+.properyType {
+	background: var(--app-color-puprle-f);
+	border-radius: 3.75rem;
+	padding: 0.2rem 0.4rem;
+}
+
+.properyType p {
+	font-weight: 300;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.544rem;
+	line-height: 0.685rem;
+	color: var(--app-color-blue-d);
+}
+
+.properyType p svg {
+	vertical-align: middle;
+	transform: scale(0.4);
+}
+
+.properyType p span {
+	font-weight: 600;
+}
+
+.moreDetails {
+	border: 0.0063rem solid var(--app-color-gray-g);
+	border-radius: 1.25rem;
+	padding: 2rem 1rem;
+	margin-bottom: 1rem;
+}
+
+.moreDetailsHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.moreDetailsHeaderText {
+	font-weight: 600;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 1rem;
+	line-height: 1.25rem;
+	color: var(--app-color-blue-d);
+}
+
+.moreDetailsHeaderButton {
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: var(--app-color-blue-b);
+	font-weight: 500;
+	font-size: 0.75rem;
+	line-height: 0.938rem;
+	font-family: "IBM Plex Sans", sans-serif;
+}
+
+.moreDetailsContent p {
+	display: none;
+	font-weight: 400;
+	font-size: 0.875rem;
+	line-height: 1.05rem;
+	font-family: "Source Sans 3", sans-serif;
+	color: var(--app-color-gray-c);
+	height: 0rem;
+	overflow: hidden;
+	margin-top: 2rem;
+}
+
+.moreDetailsContent p.activeMoreDetails {
+	display: block;
+	height: auto;
+}
+
+.gridItemTwo {
+	background: var(--app-color-white-c);
+	border-radius: 1.25rem;
+	width: 100%;
+	padding: 2rem;
+}
+
+.gridBigItemTwo {
+	display: none;
+}
+
+.gridSmallItemTwo {
+	margin-bottom: 2rem;
+	padding: 1rem;
+}
+
+.figureBox {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.2rem;
+	justify-content: space-between;
+	align-items: flex-start;
+	border-bottom: 0.063rem solid var(--app-color-gray-g);
+	padding: 1.4rem 0rem;
+}
+
+.figureBoxContents:nth-child(even) {
+	text-align: right;
+}
+
+.figureBoxHeader {
+	font-weight: 400;
+	font-size: 0.875rem;
+	line-height: 1.138rem;
+	font-family: "Source Sans 3", sans-serif;
+	color: var(--app-color-gray-d);
+	margin-bottom: 0.7rem;
+}
+
+.figureBoxFigure {
+	font-weight: 700;
+	font-size: 1rem;
+	line-height: 1.125rem;
+	font-family: "Source Sans 3", sans-serif;
+	color: var(--app-color-blue-d);
+}
+
+.usdcIcon {
+	transform: scale(1.8);
+	vertical-align: middle;
+	margin-right: 0.45rem;
+}
+
+.actionButtons {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+.actionButtons button {
+	border: 0.0063rem solid var(--app-color-blue-d);
+	background: var(--app-color-blue-d);
+	width: 100%;
+}
+
+.infoText {
+	display: flex;
+	align-items: center;
+	font-weight: 300;
+	font-size: 0.875rem;
+	line-height: 1.138rem;
+	font-family: "Source Sans 3", sans-serif;
+	color: var(--app-color-blue-d);
+	margin-top: 1rem;
+}
+
+.infoText::before {
+	display: block;
+	content: "i";
+	background: var(--app-color-puprle-e);
+	color: var(--app-color-white-a);
+	text-align: center;
+	width: 1rem;
+	height: 1rem;
+	font-size: 0.6rem;
+	border-radius: 50%;
+	margin-right: 0.2rem;
+	flex-shrink: 0;
+}
+
+.figureBoxContentForFractions {
+	width: 100%;
+}
+
+.fractionsInput {
+	display: flex;
+	width: 100%;
+	background: var(--app-color-white-a);
+	border: 0.063rem solid var(--app-color-gray-a);
+	padding: 0.8rem 1rem;
+	border-radius: 2rem;
+}
+
+.fractionsInput input {
+	border: none;
+	text-align: center;
+	font-family: "Source Sans 3", sans-serif;
+	font-weight: 600;
+	font-size: 1rem;
+	flex-grow: 1;
+	background: transparent;
+	outline: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.fractionsInput input::-webkit-outer-spin-button,
+.fractionsInput input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+.fractionsInput input[type="number"] {
+	appearance: textfield;
+}
+
+.fractionsInput button {
+	display: inline-block;
+	background: none;
+	border: 0.0625rem solid var(--app-color-gray-a);
+	border-radius: 100%;
+	cursor: pointer;
+	flex-grow: 0;
+	font-size: 1.5rem;
+	width: 2.375rem;
+	height: 2.375rem;
+}
+
+.fractionsInput button:last-of-type {
+	background: var(--app-color-blue-d);
+	border-color: var(--app-color-blue-d);
+	color: var(--app-color-white-a);
+}
+
+.fractionsInput button:disabled {
+	background: var(--app-color-gray-a);
+	color: var(--app-color-blue-d);
+	cursor: not-allowed;
+}
+
+@media all and (min-width: 768px) {
+	.connectedWalletButton {
+		display: block;
+		min-width: 18.188rem;
+	}
+
+	.galleryControls {
+		padding: 0rem 1.5rem;
+	}
+
+	.propertyName {
+		font-size: 1.563rem;
+		line-height: 1.938rem;
+	}
+
+	.status {
+		padding: 0.3rem 0.8rem;
+		font-size: 0.688rem;
+		line-height: 0.875rem;
+		border-radius: 3.75rem;
+	}
+
+	.status::before {
+		width: 0.388rem;
+		height: 0.388rem;
+		margin-right: 0.4rem;
+	}
+
+	.address {
+		font-size: 1rem;
+		line-height: 1.25rem;
+	}
+
+	.properyType {
+		border-radius: 3.75rem;
+		padding: 1rem 1.4rem;
+	}
+
+	.properyType p {
+		font-size: 1rem;
+		line-height: 1.25rem;
+	}
+
+	.properyType p svg {
+		margin-right: 0.5rem;
+		vertical-align: bottom;
+		transform: scale(1);
+	}
+
+	.figureBoxFigure {
+		font-size: 1.125rem;
+		line-height: 1.5rem;
+	}
+
+	.moreDetailsHeaderText {
+		font-size: 1.25rem;
+		line-height: 1.563rem;
+	}
+
+	.moreDetailsHeaderButton {
+		font-size: 0.875rem;
+		line-height: 1.138rem;
+	}
+}
+
+@media all and (min-width: 992px) {
+	.pageHeader {
+		padding: 2rem 3rem 3rem 3rem;
+	}
+
+	.propertyDetail {
+		padding: 3rem;
+	}
+
+	.propertyDetailContents {
+		align-items: flex-start;
+		flex-direction: row;
+	}
+
+	.gridItemOne {
+		width: 60%;
+		flex-grow: 0;
+		flex-shrink: 0;
+	}
+
+	.moreDetails {
+		padding: 3rem;
+	}
+
+	.gridItemTwo {
+		width: 40%;
+		flex-grow: 0;
+		flex-shrink: 0;
+	}
+
+	.gridSmallItemTwo {
+		display: none;
+	}
+
+	.gridBigItemTwo {
+		display: block;
+	}
+}
+
+@media all and (min-width: 1200px) {
+	.gridItemOne {
+		width: 70%;
+	}
+
+	.gridItemTwo {
+		width: 30%;
+	}
+}

@@ -1,0 +1,37 @@
+.container {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 0.2rem;
+	border: 0.063rem solid var(--app-color-gray-g);
+	border-radius: 0.5rem;
+	padding: 0.65rem 1rem;
+	width: 100%;
+}
+
+.container svg {
+	position: relative;
+	z-index: 5;
+}
+
+.container input {
+	position: absolute;
+	border: none;
+	background: inherit;
+	outline: none;
+	font-weight: 400;
+	font-family: "IBM Plex Sans", sans-serif;
+	font-size: 1rem;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	border-radius: 0.5rem;
+	padding-left: 2.5rem;
+}
+
+@media all and (min-width: 768px) {
+	.container {
+		width: 17rem;
+	}
+}

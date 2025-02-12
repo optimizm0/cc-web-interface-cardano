@@ -1,0 +1,122 @@
+.container {
+	border-radius: 1.25rem;
+	border: 0.063rem solid var(--app-color-gray-g);
+	min-width: 15.369rem;
+	max-width: 80vw;
+	flex-shrink: 0;
+	cursor: pointer;
+	/* width: 100%; */
+}
+
+.imageContainer {
+	border-radius: 1.25rem;
+	width: 100%;
+	height: 10rem;
+	background-color: var(--app-color-puprle-b);
+}
+
+.container img {
+	display: block;
+	border-radius: 1.25rem;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.details {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	margin: 1rem 0rem;
+}
+
+.details > div:first-of-type {
+	border-right: 0.063rem solid var(--app-color-white-c);
+	padding-right: 0.5rem;
+}
+
+.name {
+	color: var(--app-color-blue-d);
+	font-size: 1rem;
+	font-weight: 600;
+	font-family: "Source Sans 3", sans-serif;
+	line-height: 1.257rem;
+}
+
+.address {
+	color: var(--app-color-gray-f);
+	font-size: 0.625rem;
+	font-weight: 400;
+	font-family: "Source Sans 3", sans-serif;
+	line-height: 0.786rem;
+	margin-top: 0.2rem;
+}
+
+.exYield {
+	color: var(--app-color-blue-b);
+	font-size: 0.75rem;
+	font-weight: 300;
+	font-family: "Source Sans 3", sans-serif;
+	line-height: 0.943rem;
+	margin-top: 0.5rem;
+}
+
+.exYield span {
+	font-weight: 700;
+}
+
+.unitValueHeader {
+	color: var(--app-color-gray-h);
+	font-size: 0.5rem;
+	font-weight: 400;
+	font-family: "Source Sans 3", sans-serif;
+	line-height: 0.625rem;
+}
+
+.unitValueContainer {
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+}
+
+.unitValue {
+	color: var(--app-color-blue-d);
+	font-weight: 700;
+	font-size: 1.125rem;
+	font-family: "Source Sans 3", sans-serif;
+	line-height: 1.438rem;
+}
+
+.moreDetails {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: 1.25rem;
+	background: var(--app-color-puprle-g);
+	padding: 1rem;
+}
+
+.moreDetails h5 {
+	color: var(--app-color-blue-d);
+	font-size: 0.75rem;
+	font-weight: 300;
+	font-family: "Source Sans 3", sans-serif;
+	line-height: 0.938rem;
+}
+
+.moreDetails h5 span {
+	font-weight: 700;
+	display: block;
+	margin-top: 0.15rem;
+}
+
+@media all and (min-width: 768px) {
+	.container {
+		min-width: 19.625rem;
+		max-width: none;
+	}
+
+	.imageContainer {
+		height: 9rem;
+	}
+}

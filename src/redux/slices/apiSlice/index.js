@@ -1,0 +1,110 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { BACKEND_BASE_URL } from "src/constants";
+
+export const chainCribApi = createApi({
+	reducerPath: "chainCribApi",
+	baseQuery: fetchBaseQuery({
+		baseUrl: BACKEND_BASE_URL,
+		prepareHeaders: (headers, { getState }) => {
+			const token = getState()?.user?.value?.jwt;
+			if (token) {
+				headers.set("cc-auth-tk", token);
+			}
+			return headers;
+		},
+	}),
+	tagTypes: ["Cribs", "User"],
+	endpoints: (build) => ({
+		signIn: build.mutation({
+			query: ({ body }) => ({
+				url: "/signIn",
+				method: "POST",
+				body,
+			}),
+		}),
+		loginOnServer: build.mutation({
+			query: (header) => ({
+				url: "/auth/login",
+				method: "POST",
+				headers: {
+					["cc-magic-did"]: header,
+				},
+			}),
+		}),
+		getUser: build.query({
+			query: () => ({
+				url: "/users/me",
+				method: "GET",
+			}),
+			providesTags: ["User"],
+		}),
+		updateUser: build.mutation({
+			query: (body) => ({
+				url: "/users/me",
+				method: "PATCH",
+				body,
+			}),
+		}),
+		getUserCribs: build.query({
+			query: ({ page = 1, limit = 12 }) => ({
+				url: `/cribs/user?limit=${limit}&page=${page}&sort=desc`,
+				method: "GET",
+			}),
+			providesTags: ["Cribs"],
+		}),
+		getCribs: build.query({
+			query: (page = 1) => ({
+				url: `/cribs?limit=12&page=${page}&sort=desc`,
+				method: "GET",
+			}),
+		}),
+		sendLoginEmail: build.mutation({
+			query: (body) => ({
+				url: "/auth/send-login-email",
+				method: "POST",
+				body,
+			}),
+		}),
+		cribPurchase: build.mutation({
+			query: ({ id, ...rest }) => ({
+				url: `transactions/purchase/${id}`,
+				method: "POST",
+				body: rest,
+			}),
+			invalidatesTags: ["Cribs", "User"],
+		}),
+		getTransactions: build.query({
+			query: (page = 1) => ({
+				url: `/transactions/user?limit=12&page=${page}&sort=desc`,
+				method: "GET",
+			}),
+		}),
+		getNonce: build.query({
+			query: () => ({
+				url: "/users/nonce",
+				method: "GET",
+			}),
+		}),
+		uploadImage: build.mutation({
+			query: (body) => ({
+				url: "/media",
+				method: "POST",
+				body,
+			}),
+		}),
+	}),
+});
+
+export const {
+	useSignInMutation,
+	useGetUserQuery,
+	useGetCribsQuery,
+	useSendLoginEmailMutation,
+	useCribPurchaseMutation,
+	useLoginOnServerMutation,
+	useGetNonceQuery,
+	useUpdateUserMutation,
+	useUploadImageMutation,
+	useGetUserCribsQuery,
+	useGetTransactionsQuery,
+} = chainCribApi;

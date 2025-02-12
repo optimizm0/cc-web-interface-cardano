@@ -1,0 +1,178 @@
+.main {
+	height: 100%;
+}
+
+.pageContainer {
+	display: flex;
+	height: 100%;
+}
+
+.pageContainer > div:first-of-type {
+	width: 100%;
+	overflow-x: hidden;
+}
+
+.pageContainer > div::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 0.7rem;
+}
+
+.pageContainer > div::-webkit-scrollbar:horizontal {
+	height: 0.313rem;
+}
+
+.pageContainer > div::-webkit-scrollbar-thumb {
+	border-radius: 0.313rem;
+	border: 0.125rem solid white;
+	background-color: var(--app-color-blue-d);
+}
+
+.pageContainer > div::-webkit-scrollbar-track {
+	background-color: var(--app-color-white-a);
+	border-radius: 0.313rem;
+}
+
+.pageHeader {
+	padding: 2rem 1rem 2rem 1rem;
+}
+
+.pageHeader h6 {
+	color: var(--app-color-gray-c);
+	font-weight: 500;
+	font-size: 0.875rem;
+	line-height: 1.138rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 0.2rem;
+}
+
+.transactions {
+	padding: 2rem 1rem;
+}
+
+.transactionsContents {
+	margin-top: 3rem;
+	display: grid;
+	grid-template-columns: repeat(2, calc((100% / 2) - 0.8rem));
+	gap: 1.8rem;
+}
+
+.headerText {
+	font-weight: 500;
+	font-size: 1.125rem;
+	line-height: 1.438rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	color: var(--app-color-blue-d);
+}
+
+.tabButtonsContainer {
+	position: relative;
+	display: inline-block;
+	background: var(--app-color-gray-i);
+	border-radius: 3.75rem;
+	padding: 0.4rem;
+	margin-top: 2.5rem;
+}
+
+.tabButtonsContainer button {
+	display: inline-block;
+	border-radius: 1.875rem;
+	padding: 1rem;
+	width: 8rem;
+	cursor: pointer;
+	border: none;
+	font-weight: 600;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.875rem;
+	line-height: 1.1rem;
+	color: var(--app-color-gray-d);
+	background: var(--app-color-gray-i);
+	transition: background 0.9s;
+}
+
+.tabButtonsContainer button.active {
+	background: var(--app-color-blue-b);
+	color: var(--app-color-white-a);
+}
+
+.toolTip {
+	position: absolute;
+	top: -1rem;
+	right: -5rem;
+	font-weight: 300;
+	font-size: 0.75rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	background: var(--app-color-blue-d);
+	color: var(--app-color-white-a);
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+}
+
+.transactionContents {
+	display: flex;
+	flex-direction: column;
+	background: var(--app-color-gray-i);
+	min-height: 43.75rem;
+	margin-top: 1.5rem;
+	border-radius: 1.875rem;
+	padding: 3rem 0.5rem;
+}
+
+.cardContainer {
+	display: grid;
+	gap: 2rem;
+	grid-template-columns: 1fr;
+}
+
+.noContent {
+	width: 12.25rem;
+	margin: auto;
+}
+
+.noContent img {
+	display: block;
+	margin: 0.5rem auto;
+}
+
+.noContentHeader {
+	font-weight: 600;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 1.5rem;
+	line-height: 1.886rem;
+	color: var(--app-color-blue-d);
+	margin-bottom: 0.3rem;
+}
+
+.noContentParagraph {
+	font-weight: 400;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.75rem;
+	line-height: 0.938rem;
+	color: var(--app-color-gray-h);
+}
+
+@media all and (min-width: 768px) {
+	.pageContainer > div:first-of-type {
+		width: 70%;
+		overflow-x: hidden;
+	}
+
+	.headerText {
+		font-size: 1.5rem;
+		line-height: 1.95rem;
+	}
+
+	.transactionContents {
+		padding: 3rem 2rem;
+	}
+}
+
+@media all and (min-width: 992px) {
+	.pageHeader {
+		padding: 2rem 3rem 3rem 3rem;
+	}
+
+	.transactions {
+		padding: 3rem;
+	}
+}

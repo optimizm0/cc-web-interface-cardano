@@ -1,0 +1,153 @@
+.bigNav {
+	display: none;
+}
+
+.close {
+	position: absolute;
+	background: none;
+	border: none;
+	cursor: pointer;
+	top: 5vh;
+	right: 10vw;
+	transform: scale(1.5);
+}
+
+.smallNav {
+	position: relative;
+	display: none;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: var(--app-color-blue-h);
+	z-index: 400;
+}
+
+.smallNavActive {
+	display: block;
+}
+
+.smallNavContainer {
+	background: var(--app-color-blue-d);
+	width: 75%;
+	height: 100%;
+	padding-top: 5rem;
+	padding-left: 2rem;
+}
+
+.smallNavContainer header svg {
+	width: 7.625rem;
+}
+
+.smallNavContainer nav {
+	margin-top: 3rem;
+}
+
+.smallNavContainer nav ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.smallNavContainer nav li {
+	margin-bottom: 2rem;
+}
+
+.smallNavContainer nav li a {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+	text-decoration: none;
+	padding: 1rem 2rem;
+	border-top-left-radius: 1.875rem;
+	border-bottom-left-radius: 1.875rem;
+	color: var(--app-color-gray-c);
+	font-weight: 400;
+	font-family: "Source Sans 3", sans-serif;
+}
+
+.smallNavContainer nav li a.current {
+	background: var(--app-color-white-a);
+	font-weight: 700;
+	color: var(--app-color-blue-d);
+}
+
+.smallNavContainer nav li a.current svg path {
+	fill: var(--app-color-blue-d);
+}
+
+@media all and (min-width: 768px) {
+	.smallNavContainer {
+		width: 40%;
+	}
+}
+
+@media all and (min-width: 992px) {
+	.smallNavContainer {
+		width: 30%;
+	}
+}
+
+@media all and (min-width: 1200px) {
+	.smallNavContainer {
+		width: 25%;
+	}
+}
+
+@media all and (min-width: 1380px) {
+	.smallNav {
+		display: none;
+	}
+
+	.bigNav {
+		display: block;
+		background: var(--app-color-blue-d);
+		height: 100%;
+	}
+
+	.bigNav header {
+		padding: 2rem 6rem 2rem 2rem;
+	}
+
+	.bigNav header svg {
+		width: 9.272rem;
+	}
+
+	.bigNav nav {
+		padding: 2rem 0rem 2rem 2rem;
+	}
+
+	.bigNav nav ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.bigNav nav li {
+		margin-bottom: 1rem;
+	}
+
+	.bigNav nav li a {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		text-decoration: none;
+		padding: 1rem 2rem;
+		border-top-left-radius: 1.875rem;
+		border-bottom-left-radius: 1.875rem;
+		color: var(--app-color-gray-c);
+		font-weight: 400;
+		font-family: "Source Sans 3", sans-serif;
+	}
+
+	.bigNav nav li a.current {
+		background: var(--app-color-white-a);
+		font-weight: 700;
+		color: var(--app-color-blue-d);
+	}
+
+	.bigNav nav li a.current svg path {
+		fill: var(--app-color-blue-d);
+	}
+}

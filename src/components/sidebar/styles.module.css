@@ -1,0 +1,174 @@
+.sidebar {
+	width: 80%;
+	background: var(--app-color-white-c);
+	padding: 2rem 1rem;
+	overflow-y: scroll;
+	border-top-left-radius: 1.875rem;
+	border-bottom-left-radius: 1.875rem;
+}
+
+.close {
+	position: absolute;
+	background: none;
+	border: none;
+	cursor: pointer;
+	top: 5vh;
+	left: 5vw;
+	transform: scale(1.5);
+}
+
+.sidebarLarge {
+	display: none;
+}
+
+.sidebarSmall {
+	position: relative;
+	display: none;
+	justify-content: flex-end;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: var(--app-color-blue-h);
+	z-index: 300;
+}
+
+.sidebarSmallActive {
+	display: flex;
+}
+
+.sidebar::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 0.7rem;
+}
+
+.sidebar::-webkit-scrollbar:horizontal {
+	height: 0.313rem;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+	border-radius: 0.313rem;
+	border: 0.125rem solid white;
+	background-color: var(--app-color-blue-d);
+}
+
+.sidebar::-webkit-scrollbar-track {
+	background-color: var(--app-color-white-a);
+	border-radius: 0.313rem;
+}
+
+.sidebarHeader {
+	color: var(--app-color-gray-c);
+	font-weight: 500;
+	font-size: 0.875rem;
+	line-height: 1.138rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 0.2rem;
+}
+
+.connectedWalletButton {
+	margin: 3rem 0rem 1rem 0rem;
+}
+
+.balanceHolder {
+	background: var(--app-color-black-c);
+	padding: 1.8rem;
+	border-radius: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+.headerTitle {
+	font-family: "Source Sans 3", sans-serif;
+	font-weight: 400;
+	font-size: 0.875rem;
+	line-height: 1.138rem;
+	color: var(--app-color-gray-d);
+	margin-bottom: 0.4rem;
+}
+
+.headerBalance {
+	font-family: "Source Sans 3", sans-serif;
+	font-weight: 700;
+	font-size: 2.25rem;
+	line-height: 2.925rem;
+	color: var(--app-color-blue-d);
+	margin-bottom: 0.5rem;
+}
+
+.headerBalance span {
+	font-weight: 600;
+	font-size: 1rem;
+	line-height: 1.3rem;
+	vertical-align: super;
+}
+
+.transactionBalanceHolder {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin-bottom: 1rem;
+}
+
+.headerBalanceSmall {
+	font-family: "Source Sans 3", sans-serif;
+	font-weight: 600;
+	font-size: 1.456rem;
+	line-height: 1.894rem;
+	color: var(--app-color-blue-d);
+}
+
+.headerBalanceSmall span {
+	font-weight: 600;
+	font-size: 0.583rem;
+	line-height: 0.758rem;
+	vertical-align: super;
+}
+
+.infoParagraph {
+	font-family: "Source Sans 3", sans-serif;
+	font-weight: 300;
+	font-size: 0.75rem;
+	line-height: 0.975rem;
+	text-align: center;
+	padding: 0rem 1rem;
+}
+
+.balanceHolder button {
+	width: 100%;
+	background: var(--app-color-blue-d);
+	margin: 1rem 0rem;
+	padding: 0.8rem 1.75rem;
+}
+
+@media all and (min-width: 768px) {
+	.sidebar {
+		width: 40%;
+		padding: 2rem 1rem;
+		border-top-left-radius: 0rem;
+		border-bottom-left-radius: 0rem;
+	}
+
+	.sidebarSmall {
+		display: none;
+	}
+
+	.sidebarLarge {
+		display: block;
+	}
+}
+
+@media all and (min-width: 992px) {
+	.sidebar {
+		width: 35%;
+		padding: 2rem 1rem;
+	}
+}
+
+@media all and (min-width: 1200px) {
+	.sidebar {
+		width: 30%;
+		padding: 2rem;
+	}
+}

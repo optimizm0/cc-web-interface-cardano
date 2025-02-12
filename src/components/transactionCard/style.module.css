@@ -1,0 +1,65 @@
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 0.063rem solid var(--app-color-gray-g);
+	padding-bottom: 1rem;
+}
+
+.mainDetails {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	width: 70%;
+	overflow: hidden;
+}
+
+.header {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.header,
+.amount {
+	font-weight: 600;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.875rem;
+	line-height: 1.138rem;
+	color: var(--app-color-blue-d);
+	margin-bottom: 0.3rem;
+}
+
+.description,
+.date {
+	font-weight: 400;
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.75rem;
+	line-height: 0.938rem;
+	color: var(--app-color-gray-c);
+}
+
+.amount {
+	color: var(--app-color-puprle-e);
+	text-align: right;
+}
+
+.amount::after {
+	content: " USDC";
+}
+
+.amount::before {
+	content: "+";
+}
+
+.amount.expense {
+	color: var(--app-color-red-c);
+}
+
+.amount.expense::before {
+	content: "-";
+}
+
+.date {
+	font-weight: 600;
+}

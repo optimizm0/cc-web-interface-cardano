@@ -1,0 +1,40 @@
+.input {
+	display: inline-block;
+	border: 0.063rem solid var(--app-color-gray-d);
+	background: none;
+	outline: none;
+	color: var(--app-color-white-a);
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 1rem;
+	padding: 1rem 1.4rem;
+	border-radius: 0.5rem;
+	text-align: left !important;
+}
+
+.input:focus {
+	background: var(--app-color-white-a);
+	color: var(--app-color-blue-d);
+}
+
+.input:disabled {
+	background: var(--app-color-gray-g);
+	cursor: not-allowed;
+}
+
+.inputError {
+	border-color: var(--app-color-red-a);
+}
+
+.errorText {
+	font-weight: 300;
+	font-size: 0.75rem;
+	font-family: "Source Sans 3", sans-serif;
+	color: var(--app-color-red-b);
+}
+
+@media all and (min-width: 768px) {
+	.input {
+		font-size: 0.875rem;
+		line-height: 1.125rem;
+	}
+}

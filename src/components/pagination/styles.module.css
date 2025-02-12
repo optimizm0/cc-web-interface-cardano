@@ -1,0 +1,21 @@
+.container {
+	margin: 1.5rem 0rem;
+}
+
+.container button {
+	border: 0.0625rem solid var(--app-color-gray-g);
+	padding: 0.3rem 0.6rem;
+	cursor: pointer;
+	font-weight: 400;
+	font-family: "Source Sans 3", sans-serif;
+	margin-right: 0.1rem;
+	color: var(--app-color-black-a);
+	background: none;
+}
+
+.container button:disabled {
+	background: var(--app-color-gray-a);
+	border-color: var(--app-color-gray-a);
+	color: var(--app-color-gray-g);
+	cursor: not-allowed;
+}

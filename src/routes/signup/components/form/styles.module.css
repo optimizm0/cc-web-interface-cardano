@@ -1,0 +1,21 @@
+.form {
+	display: block;
+	margin: 1.8rem 0rem;
+	position: relative;
+	text-align: center;
+	z-index: 20;
+}
+
+.form .input {
+	margin-bottom: 1.2rem;
+	text-align: left;
+}
+
+.form button,
+.form input {
+	width: 100%;
+}
+
+.form button {
+	margin-top: 1rem;
+}

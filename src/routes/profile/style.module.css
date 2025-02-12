@@ -1,0 +1,223 @@
+.main {
+	height: 100%;
+}
+
+.pageContainer {
+	display: flex;
+	height: 100%;
+}
+
+.pageContainer > div:first-of-type {
+	width: 100%;
+	overflow-x: hidden;
+}
+
+.pageContainer > div::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 0.7rem;
+}
+
+.pageContainer > div::-webkit-scrollbar:horizontal {
+	height: 0.313rem;
+}
+
+.pageContainer > div::-webkit-scrollbar-thumb {
+	border-radius: 0.313rem;
+	border: 0.125rem solid white;
+	background-color: var(--app-color-blue-d);
+}
+
+.pageContainer > div::-webkit-scrollbar-track {
+	background-color: var(--app-color-white-a);
+	border-radius: 0.313rem;
+}
+
+.pageHeader {
+	padding: 2rem 1rem 2rem 1rem;
+}
+
+.pageHeader h6 {
+	color: var(--app-color-gray-c);
+	font-weight: 500;
+	font-size: 0.875rem;
+	line-height: 1.138rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 0.2rem;
+}
+
+.profile {
+	padding: 2rem 1rem;
+}
+
+.profileContents {
+	margin-top: 3rem;
+}
+
+.headerText {
+	font-weight: 500;
+	font-size: 1.125rem;
+	line-height: 1.438rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	color: var(--app-color-blue-d);
+}
+
+.profileImageUploader {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.imageHolder {
+	position: relative;
+	width: 8.25rem;
+	height: 8.25rem;
+	border-radius: 50%;
+	border: 0.125rem solid var(--app-color-black-b);
+	overflow: hidden;
+}
+
+.imageHolder img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.cameraIcon {
+	position: absolute;
+	width: 1.6rem;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 2;
+}
+
+.fileInput {
+	display: block;
+	position: absolute;
+	top: -10rem;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 5;
+	cursor: pointer;
+	background: #0000001a;
+}
+
+.profileImageUploaderTextHolder {
+	max-width: 12.5rem;
+}
+
+.profilePictureHeader {
+	font-weight: 600;
+	font-size: 1rem;
+	line-height: 1.125rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	color: var(--app-color-blue-d);
+}
+
+.profilePictureParagraph {
+	font-weight: 400;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	font-family: "Source Sans 3", sans-serif;
+	color: var(--app-color-gray-c);
+	margin: 0.5rem 0rem 1rem 0rem;
+}
+
+.profileImageUploader button {
+	background: inherit;
+	border: 0.063rem solid var(--app-color-blue-b);
+	color: var(--app-color-blue-b);
+}
+
+.userDetails {
+	margin: 4rem 0rem 2rem 0rem;
+}
+
+.subHeaderText {
+	font-weight: 600;
+	font-size: 1.125rem;
+	line-height: 1.438rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	color: var(--app-color-gray-c);
+	margin-bottom: 1.8rem;
+}
+
+.userDetailsForm {
+	display: grid;
+	gap: 1.4rem;
+	grid-template-columns: 1fr;
+}
+
+.userDetailsForm input {
+	width: 100%;
+	border-color: var(--app-color-gray-g);
+	color: var(--app-color-blue-d);
+}
+
+.stakeKeyContainer {
+	margin-top: 3rem;
+}
+
+.stakeKeyContainer > div {
+	display: grid;
+	grid-template-columns: 1fr;
+	align-items: center;
+	gap: 1rem;
+}
+
+.stakeKeyContainer div input {
+	width: 100%;
+	border-color: var(--app-color-gray-g);
+	color: var(--app-color-blue-d);
+}
+
+.stakeKeyContainer div button {
+	background: var(--app-color-blue-d);
+}
+
+@media all and (min-width: 768px) {
+	.pageContainer > div:first-of-type {
+		width: 70%;
+		overflow-x: hidden;
+	}
+
+	.headerText {
+		font-size: 1.5rem;
+		line-height: 1.95rem;
+	}
+
+	.profileImageUploader {
+		align-items: center;
+		flex-direction: row;
+	}
+
+	.userDetailsForm {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.saveDetailsButtonContainer {
+		grid-column: 1/3;
+	}
+
+	.stakeKeyContainer > div {
+		grid-template-columns: 50% 30%;
+	}
+}
+
+@media all and (min-width: 992px) {
+	.profile {
+		padding: 3rem;
+	}
+
+	.pageHeader {
+		padding: 2rem 3rem 3rem 3rem;
+	}
+
+	.stakeKeyContainer > div {
+		grid-template-columns: 50% 20%;
+	}
+}

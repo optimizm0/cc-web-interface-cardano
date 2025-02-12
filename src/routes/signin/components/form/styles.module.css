@@ -1,0 +1,69 @@
+.form {
+	display: block;
+	margin: 1.8rem 0rem;
+	position: relative;
+	text-align: center;
+	z-index: 20;
+}
+
+.form .input {
+	margin-bottom: 1.2rem;
+	text-align: left;
+}
+
+.form button,
+.form input {
+	width: 100%;
+}
+
+.defaultSignInButton {
+	margin-top: 0.5rem;
+}
+
+.googleButton {
+	margin-top: 1rem;
+	border: 1px solid var(--app-color-white-a);
+	background: none;
+}
+
+.googleButton svg,
+.walletButton svg {
+	vertical-align: middle;
+	margin-right: 0.5rem;
+}
+
+.connectWallectSection {
+	margin-top: 2rem;
+}
+
+.connectWallectSection p.demarcator {
+	position: relative;
+	font-size: 0.875rem;
+	font-weight: 200;
+	text-transform: uppercase;
+	width: 100%;
+}
+
+.demarcator::before,
+.demarcator::after {
+	content: " ";
+	position: absolute;
+	background: var(--app-color-gray-d);
+	height: 0.063rem;
+	width: 40%;
+	top: 50%;
+}
+
+.demarcator::before {
+	left: 0;
+}
+
+.demarcator::after {
+	right: 0;
+}
+
+.walletButton {
+	margin-top: 1.5rem;
+	background: var(--app-color-white-a);
+	color: var(--app-color-blue-d);
+}

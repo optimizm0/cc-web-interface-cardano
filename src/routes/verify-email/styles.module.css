@@ -1,0 +1,163 @@
+.main {
+	height: 100vh;
+	background: var(--app-color-blue-d);
+	overflow: auto;
+}
+
+.container {
+	max-width: var(--app-max-width);
+	margin: 0 auto;
+	padding: 0rem 1.5rem;
+}
+
+.main header {
+	padding: 2rem 0rem;
+}
+
+.main header svg {
+	width: 8.125rem;
+}
+
+.contentContainer {
+	position: relative;
+	width: 100%;
+	max-width: 28.25rem;
+	background: var(--app-color-gray-e);
+	border-radius: 1.25rem;
+	border: 0.063rem solid var(--app-color-gray-d);
+	padding: 3.5rem 1.4rem;
+	margin: 8rem auto;
+	z-index: 100;
+	overflow: hidden;
+}
+
+.contentContainer::before {
+	content: "";
+	background: conic-gradient(
+		transparent 270deg,
+		var(--app-color-blue-b),
+		transparent
+	);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	aspect-ratio: 1;
+	width: 100%;
+	animation: rotate 5s linear infinite;
+}
+
+.contentContainer::after {
+	content: "";
+	background: var(--app-color-blue-d);
+	border-radius: inherit;
+	position: absolute;
+	inset: 0.3rem;
+	height: calc(100 - 2 * 0.3rem);
+	width: calc(100 - 2 * 0.3rem);
+}
+
+.contentContainer * {
+	position: relative;
+	text-align: center;
+	z-index: 20;
+}
+
+.contentContainer img {
+	display: block;
+	margin: 0 auto;
+	animation: shake 0.5s;
+	animation-iteration-count: infinite;
+}
+
+.contentContainer h1 {
+	color: var(--app-color-white-a);
+	font-weight: 600;
+	font-size: 1.75rem;
+	font-family: "IBM Plex Sans", sans-serif;
+	line-height: 2.275rem;
+	margin: 1rem 0rem;
+}
+
+.contentContainer p {
+	color: var(--app-color-white-a);
+	font-weight: 300;
+	font-size: 0.75rem;
+	font-family: "Source Sans 3", sans-serif;
+	line-height: 0.975rem;
+	width: 60%;
+	margin: 0 auto;
+}
+
+.contentContainer a {
+	color: var(--app-color-blue-b);
+	text-decoration: none;
+	font-weight: 700;
+}
+
+@media all and (min-width: 768px) {
+	.main header svg {
+		width: 9.272rem;
+	}
+
+	.contentContainer {
+		padding: 4rem 3rem;
+	}
+
+	.contentContainer h1 {
+		font-size: 2rem;
+		line-height: 1.125rem;
+		margin: 1.7rem 0rem;
+	}
+
+	.contentContainer p {
+		font-size: 0.875rem;
+		line-height: 1.125rem;
+		width: 70%;
+	}
+}
+
+@keyframes rotate {
+	from {
+		transform: translate(-50%, -50%) scale(1.4) rotate(0turn);
+	}
+	to {
+		transform: translate(-50%, -50%) scale(1.4) rotate(1turn);
+	}
+}
+
+@keyframes shake {
+	0% {
+		transform: translate(1px, 1px) rotate(0deg);
+	}
+	10% {
+		transform: translate(-1px, -2px) rotate(-1deg);
+	}
+	20% {
+		transform: translate(-3px, 0px) rotate(1deg);
+	}
+	30% {
+		transform: translate(3px, 2px) rotate(0deg);
+	}
+	40% {
+		transform: translate(1px, -1px) rotate(1deg);
+	}
+	50% {
+		transform: translate(-1px, 2px) rotate(-1deg);
+	}
+	60% {
+		transform: translate(-3px, 1px) rotate(0deg);
+	}
+	70% {
+		transform: translate(3px, 1px) rotate(-1deg);
+	}
+	80% {
+		transform: translate(-1px, -1px) rotate(1deg);
+	}
+	90% {
+		transform: translate(1px, 2px) rotate(0deg);
+	}
+	100% {
+		transform: translate(1px, -2px) rotate(-1deg);
+	}
+}

@@ -1,0 +1,18 @@
+.button {
+	cursor: pointer;
+	display: inline-block;
+	border: none;
+	background: var(--app-color-blue-b);
+	color: var(--app-color-white-a);
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.875rem;
+	font-weight: 600;
+	line-height: 1.125rem;
+	padding: 1rem 1.75rem;
+	border-radius: 1.875rem;
+}
+
+.button:disabled {
+	cursor: not-allowed;
+	background: var(--app-color-gray-d);
+}
