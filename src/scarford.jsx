@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 const Scarford = () => {
-	const isloggedIn = useSelector((state) => !!state?.user?.value?.jwt);
+	const isloggedIn = useSelector((state) => !!state?.user?.value?.email);
 	const [showSmallNav, setShowSmallNav] = useState(false);
 	const [showSmallSideBar, setShowSmallSideBar] = useState(false);
 

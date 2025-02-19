@@ -18,6 +18,15 @@
 
 .defaultSignInButton {
 	margin-top: 0.5rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.defaultSignInButton .socialProvidersContainer svg {
+	display: inline-block;
+	width: 1.3rem;
+	vertical-align: middle;
+	margin: 0rem 0.15rem;
 }
 
 .googleButton {

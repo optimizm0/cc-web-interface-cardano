@@ -7,6 +7,7 @@ import {
 } from "./constants";
 import { USDC_BASE_SEPOLIA_ABI } from "./usdc-abi";
 import { ethers } from "ethers";
+// import { Buffer } from "buffer";
 
 // Setting network to point to Base testnet
 const magicInstance = new Magic("pk_live_4A67BA442565C356", {
@@ -149,6 +150,36 @@ function formatDate(isoDate) {
 	return "";
 }
 
+const MESSAGE = "Hello, Welcome to Chaincrib!";
+
+const signMessage = async () => {
+	if (!window.cardano || !window.cardano.nufiSSO) {
+		throw new Error("NuFi Wallet not found");
+	}
+
+	try {
+		// Enable NuFi Wallet
+		const api = await window.cardano.nufiSSO.enable();
+		// Get the user's Cardano address
+		const addresses = await api.getUsedAddresses();
+
+		if (!addresses.length) {
+			throw new Error("No Cardano addresses found in NuFi.");
+		}
+
+		// Convert message to hex
+		// const messageHex = Buffer.from(MESSAGE, "utf8").toString("hex");
+
+		// Sign the message
+		// const signedData = await api.signData(addresses[0], messageHex);
+
+		// return { ...signedData, address: addresses[0] }; // Returns { signature, key, address }
+	} catch (error) {
+		console.error("Error signing message:", error);
+		throw error;
+	}
+};
+
 export {
 	magicInstance,
 	loginWithMagic,
@@ -158,4 +189,6 @@ export {
 	fromBigNumberToUSDC,
 	toBigNumberFromUSDC,
 	formatDate,
+	signMessage,
+	MESSAGE,
 };

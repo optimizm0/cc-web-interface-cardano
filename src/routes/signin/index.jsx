@@ -13,10 +13,10 @@ export const Signin = () => {
 					</Link>
 				</header>
 				<div className={styles.formContainer}>
-					<h1>Link your email address</h1>
+					<h1>Sign in using your social account.</h1>
 					<p>
-						Provide your email address, we will send you a one-time
-						merge link to continue
+						Connect your social account to access your Chaincrib
+						account.
 					</p>
 					<SigninForm />
 				</div>

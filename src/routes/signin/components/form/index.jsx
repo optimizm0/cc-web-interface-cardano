@@ -1,113 +1,84 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import styles from "./styles.module.css";
-import { AppLoader, Button, Input } from "../../../../components";
-import { useNavigate } from "react-router-dom";
+import { Button } from "../../../../components";
+// import { useNavigate } from "react-router-dom";
+// import toast from "react-hot-toast";
+// import { useDispatch } from "react-redux";
+import { DiscordIcon, FacebookIcon, GoogleIcon } from "src/assets";
+import { addUser } from "src/redux/slices";
+import { signMessage } from "src/utils";
 import toast from "react-hot-toast";
-import { addUser, useLoginOnServerMutation } from "src/redux/slices";
-import { loginWithMagic } from "src/utils";
+import nufiCoreSdk from "@nufi/dapp-client-core";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+const isLoading = false;
 
 export const SigninForm = () => {
-	const [loading, setLoading] = useState(false);
-	const [formData, setFormData] = useState({
-		email: "",
-	});
-
-	const [errors, setErrors] = useState({
-		email: "",
-	});
-
-	const [loginOnServer, { isLoading }] = useLoginOnServerMutation();
+	// const [publicKeyHex, setPublicKeyHex] = useState(null);
+	// const [signatureHex, setSignatureHex] = useState(null);
+	// const [loginOnServerWithNufi, { isLoading }] =
+	// 	useLoginOnServerWithNufiMutation();
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setFormData({
-			...formData,
-			[name]: value,
-		});
+	const signIn = async () => {
+		// const signedMessage = await signMessage("Hello, Welcome to Chaincrib!");
+		// console.log(signedMessage, "signedMessage");
+		await signMessage();
+
+		// if (signedData) {
+		// 	setPublicKeyHex(signedData?.key);
+		// 	setSignatureHex(signedData?.signature);
+		// 	return;
+		// }
 	};
 
-	const checkValidity = () => {
-		// Check if some fields in formData are empty
-		const formDataEmpty = Object.values(formData).some(
-			(value) => value === ""
-		);
-
-		// Check if all fields in errors are empty
-		const errorsEmpty = Object.values(errors).every(
-			(error) => error === ""
-		);
-
-		// Return true if both formData and errors are empty
-		return formDataEmpty && errorsEmpty;
-	};
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		// Validation
-		let valid = true;
-		const newErrors = { ...errors };
-
-		if (!formData.email.trim()) {
-			newErrors.email = "Email is required";
-			valid = false;
-		} else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-			newErrors.email = "Invalid email address";
-			valid = false;
-		} else {
-			newErrors.email = "";
-		}
-
-		if (valid) {
-			setLoading(true);
-			try {
-				await loginWithMagic(formData.email, true).then((data) => {
-					if (data) {
-						loginOnServer(data)
-							.then((res) => {
-								dispatch(addUser(res?.data?.data));
-								toast.success("Login succesful!");
-								navigate("/dashboard");
-							})
-							.catch(() => {
-								toast.error("Something went wrong!");
-							});
-					}
-				});
-			} catch {
-				toast.error("Something went wrong!! 🥹");
+	useEffect(() => {
+		nufiCoreSdk.onSocialLoginInfoChanged((data) => {
+			if (data) {
+				dispatch(addUser(data));
+				toast.success("Login succesful!");
+				navigate("/dashboard");
 			}
-			setLoading(false);
-		}
-
-		setErrors(newErrors);
-	};
+			// Store data in your app
+			// if (publicKeyHex && signatureHex) {
+			// 	loginOnServerWithNufi({
+			// 		email: "eobumma@gmail.com",
+			// 		message: MESSAGE,
+			// 		publicKeyHex,
+			// 		signatureHex,
+			// 	})
+			// 		.then((res) => {
+			// 			console.log(res, "result");
+			// 		})
+			// 		.catch((error) => {
+			// 			console.log(error, "Something went wrong!");
+			// 		});
+			// }
+		});
+	}, [dispatch, navigate]);
 
 	return (
 		<>
-			{loading ? <AppLoader /> : null}
-			<form onSubmit={handleSubmit} className={styles.form}>
-				<Input
-					type="email"
-					placeholder="Email address"
-					name="email"
-					value={formData.email}
-					onChange={handleChange}
-					errorText={errors.email}
-					className={styles.input}
-					required
-				/>
+			{/* {loading ? <AppLoader /> : null} */}
+			<div className={styles.form}>
 				<Button
-					disabled={checkValidity() || isLoading}
-					type="submit"
+					disabled={isLoading}
+					onClick={signIn}
 					className={styles.defaultSignInButton}
 				>
-					{isLoading ? "Loading..." : "Continue With Email"}
+					{isLoading ? (
+						"Loading..."
+					) : (
+						<div className={styles.socialProvidersContainer}>
+							Continue with <GoogleIcon /> <FacebookIcon />{" "}
+							<DiscordIcon />
+						</div>
+					)}
 				</Button>
-			</form>
+			</div>
 		</>
 	);
 };

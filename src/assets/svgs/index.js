@@ -16,6 +16,8 @@ import SearchIcon from "./searchIcon.svg?react";
 import CameraIcon from "./camera.svg?react";
 import PropertyIcon from "./propertyIcon.svg?react";
 import GoogleIcon from "./googleIcon.svg?react";
+import FacebookIcon from "./facebookIcon.svg?react";
+import DiscordIcon from "./discordIcon.svg?react";
 import RainbowIcon from "./rainbowIcon.svg?react";
 
 export {
@@ -37,5 +39,7 @@ export {
 	CameraIcon,
 	PropertyIcon,
 	GoogleIcon,
+	FacebookIcon,
+	DiscordIcon,
 	RainbowIcon,
 };

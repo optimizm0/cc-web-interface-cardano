@@ -31,6 +31,13 @@ export const chainCribApi = createApi({
 				},
 			}),
 		}),
+		loginOnServerWithNufi: build.mutation({
+			query: (body) => ({
+				url: "/auth/nufi",
+				method: "POST",
+				body,
+			}),
+		}),
 		getUser: build.query({
 			query: () => ({
 				url: "/users/me",
@@ -102,6 +109,7 @@ export const {
 	useSendLoginEmailMutation,
 	useCribPurchaseMutation,
 	useLoginOnServerMutation,
+	useLoginOnServerWithNufiMutation,
 	useGetNonceQuery,
 	useUpdateUserMutation,
 	useUploadImageMutation,

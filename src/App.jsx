@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useEffect } from "react";
 import Scarford from "./scarford";
 import { Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -12,7 +13,10 @@ import {
 	Signin,
 	Investment,
 } from "./routes";
-import { magicInstance } from "./utils";
+import nufiCoreSdk from "@nufi/dapp-client-core";
+import { initNufiDappCardanoSdk } from "@nufi/dapp-client-cardano";
+
+nufiCoreSdk.init("https://wallet-testnet-staging.nu.fi");
 
 const router = createBrowserRouter([
 	{ path: "/signin", element: <Signin /> },
@@ -56,12 +60,11 @@ const router = createBrowserRouter([
 	},
 ]);
 
-magicInstance.user.onUserLoggedOut(() => {
-	// Do something when user is logged out
-	window.location.replace("/signin");
-});
-
 function App() {
+	useEffect(() => {
+		initNufiDappCardanoSdk(nufiCoreSdk, "sso");
+	}, []);
+
 	return (
 		<>
 			<Toaster

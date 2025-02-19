@@ -6,9 +6,10 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { removeUser } from "src/redux/slices";
 import toast from "react-hot-toast";
+// import nufiCoreSdk from "@nufi/dapp-client-core";
 
 export const ConnectedWalletButton = ({ className = {} }) => {
-	const [showDisconnectButton, setshowDisconnectButton] = useState(false);
+	const [showDisconnectButton] = useState(false);
 	const [address, setAddress] = useState("");
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
@@ -32,16 +33,25 @@ export const ConnectedWalletButton = ({ className = {} }) => {
 			.catch((err) => console.log(err, "error"));
 	};
 
+	const api = async () => {
+		// setLoading(true);
+		// const widgetApi = await nufiCoreSdk.getWidgetApi();
+		// widgetApi.showWidget("opened");
+		// dispatch(removeUser());
+		// widgetApi.signOut();
+		// window.location.replace("/");
+		await window.cardano.nufiSSO.enable();
+		// setLoading(false);
+	};
+
 	useEffect(() => {
 		getWalletInfo();
+		api();
 	}, []);
 
 	return (
 		<div className={`${styles.accountDetailsHolder} ${className}`}>
-			<button
-				className={styles.accountDetails}
-				onClick={() => setshowDisconnectButton(!showDisconnectButton)}
-			>
+			<button className={styles.accountDetails} onClick={api}>
 				<div>
 					<img
 						src={avatar}
