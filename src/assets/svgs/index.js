@@ -11,7 +11,7 @@ import UserIcon from "./userIcon.svg?react";
 import WalletIcon from "./walletIcon.svg?react";
 import TransactionIcon from "./transaction.svg?react";
 import PowerIcon from "./powerIcon.svg?react";
-import UsdcIcon from "./usdc.svg?react";
+import AdaIcon from "./ada.svg?react";
 import SearchIcon from "./searchIcon.svg?react";
 import CameraIcon from "./camera.svg?react";
 import PropertyIcon from "./propertyIcon.svg?react";
@@ -34,7 +34,7 @@ export {
 	WalletIcon,
 	TransactionIcon,
 	PowerIcon,
-	UsdcIcon,
+	AdaIcon,
 	SearchIcon,
 	CameraIcon,
 	PropertyIcon,

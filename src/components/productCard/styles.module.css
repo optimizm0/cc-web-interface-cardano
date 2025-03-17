@@ -79,6 +79,11 @@
 	gap: 0.3rem;
 }
 
+.unitValueContainer svg {
+	width: 0.875rem;
+	height: 0.875rem;
+}
+
 .unitValue {
 	color: var(--app-color-blue-d);
 	font-weight: 700;

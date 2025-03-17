@@ -1,57 +1,40 @@
 import { useState } from "react";
 import styles from "./styles.module.css";
 import { Arrow, PowerIcon, avatar } from "../../assets";
-import { formatCryptoAddress, magicInstance } from "src/utils";
+import { formatCryptoAddress } from "src/utils";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { removeUser } from "src/redux/slices";
-import toast from "react-hot-toast";
-// import nufiCoreSdk from "@nufi/dapp-client-core";
+import nufiCoreSdk from "@nufi/dapp-client-core";
+import { useSelector } from "react-redux";
 
 export const ConnectedWalletButton = ({ className = {} }) => {
 	const [showDisconnectButton] = useState(false);
-	const [address, setAddress] = useState("");
+	const address = useSelector((state) => state?.user?.value?.user?.wallet);
 	const [loading, setLoading] = useState(false);
-	const dispatch = useDispatch();
-
-	const disconnectWallet = async () => {
-		setLoading(true);
-		await magicInstance.user
-			.logout()
-			.then(() => {
-				dispatch(removeUser());
-				window.location.replace("/");
-			})
-			.catch(() => toast.error("Something went wrong!!"))
-			.finally(() => setLoading(false));
-	};
-
-	const getWalletInfo = async () => {
-		await magicInstance.wallet
-			.getInfo()
-			.then((data) => setAddress(data?.publicAddress))
-			.catch((err) => console.log(err, "error"));
-	};
 
 	const api = async () => {
-		// setLoading(true);
-		// const widgetApi = await nufiCoreSdk.getWidgetApi();
-		// widgetApi.showWidget("opened");
-		// dispatch(removeUser());
-		// widgetApi.signOut();
-		// window.location.replace("/");
+		setLoading(true);
 		await window.cardano.nufiSSO.enable();
-		// setLoading(false);
+		setLoading(false);
+	};
+
+	const showWidget = async () => {
+		const widgetApi = await nufiCoreSdk.getWidgetApi();
+		const status = widgetApi.getWidgetVisibilityStatus();
+
+		if (status === "closed") {
+			widgetApi.showWidget("opened");
+		} else {
+			widgetApi.showWidget("closed");
+		}
 	};
 
 	useEffect(() => {
-		getWalletInfo();
 		api();
 	}, []);
 
 	return (
 		<div className={`${styles.accountDetailsHolder} ${className}`}>
-			<button className={styles.accountDetails} onClick={api}>
+			<button className={styles.accountDetails} onClick={showWidget}>
 				<div>
 					<img
 						src={avatar}
@@ -75,7 +58,7 @@ export const ConnectedWalletButton = ({ className = {} }) => {
 					showDisconnectButton ? styles.showDisconnectButton : ""
 				}`}
 				disabled={loading}
-				onClick={disconnectWallet}
+				onClick={() => null}
 			>
 				{!loading ? (
 					<>

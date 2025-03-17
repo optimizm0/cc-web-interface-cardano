@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Hamburger, LogoFull, avatar } from "./assets";
 import { Navbar, Sidebar } from "./components";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
 
 const Scarford = () => {
-	const isloggedIn = useSelector((state) => !!state?.user?.value?.email);
+	const isloggedIn = useSelector((state) => !!state?.user?.value?.jwt);
 	const [showSmallNav, setShowSmallNav] = useState(false);
 	const [showSmallSideBar, setShowSmallSideBar] = useState(false);
 

@@ -367,6 +367,11 @@
 	padding: 1.4rem 0rem;
 }
 
+.figureBox svg {
+	width: 0.875rem;
+	height: 0.875rem;
+}
+
 .figureBoxContents:nth-child(even) {
 	text-align: right;
 }
@@ -388,7 +393,7 @@
 	color: var(--app-color-blue-d);
 }
 
-.usdcIcon {
+.adaIcon {
 	transform: scale(1.8);
 	vertical-align: middle;
 	margin-right: 0.45rem;

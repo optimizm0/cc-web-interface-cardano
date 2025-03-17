@@ -1,13 +1,13 @@
 import styles from "./style.module.css";
 import { roundedBill, roundedCoin } from "../../assets";
-import { formatDate, fromBigNumberToUSDC } from "src/utils";
+import { formatDate } from "src/utils";
 
 export const TransactionCard = ({
 	revenue = false,
 	header,
 	description,
 	createdAt,
-	amountInUSDC,
+	amountInADA,
 }) => {
 	return (
 		<div className={styles.container}>
@@ -29,7 +29,7 @@ export const TransactionCard = ({
 						!revenue ? styles.expense : ""
 					}`}
 				>
-					{fromBigNumberToUSDC(amountInUSDC)}
+					{amountInADA}
 				</h2>
 				<h3 className={styles.date}>{formatDate(createdAt)}</h3>
 			</div>

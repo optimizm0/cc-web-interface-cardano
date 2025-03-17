@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button, ConnectedWalletButton } from "../../components";
-import { UsdcIcon, ArrowWithLine, PropertyIcon } from "../../assets";
+import { AdaIcon, ArrowWithLine, PropertyIcon } from "../../assets";
 import { useNavigate, useLocation } from "react-router-dom";
-import { fromBigNumberToUSDC } from "src/utils";
 import styles from "./style.module.css";
 
 export const PortfolioId = () => {
@@ -18,14 +17,14 @@ export const PortfolioId = () => {
 
 	const handleGalleryLeft = () => {
 		if (currentImage === 0) {
-			setCurrentImage(2);
+			setCurrentImage(data?.altImages?.length - 1 || 0);
 			return;
 		}
 		setCurrentImage(currentImage - 1);
 	};
 
 	const handleGalleryRight = () => {
-		if (currentImage === 2) {
+		if (currentImage === data?.altImages?.length - 1) {
 			setCurrentImage(0);
 			return;
 		}
@@ -36,6 +35,7 @@ export const PortfolioId = () => {
 		navigate(`/investment/${data._id}`, { state: data });
 	};
 
+	console.log(data, "dataxxxxxxxxsss");
 	return (
 		<main className={styles.main}>
 			<div className={styles.pageContainer}>
@@ -240,12 +240,10 @@ export const PortfolioId = () => {
 													styles.figureBoxFigure
 												}
 											>
-												<UsdcIcon
-													className={styles.usdcIcon}
+												<AdaIcon
+													className={styles.adaIcon}
 												/>{" "}
-												{fromBigNumberToUSDC(
-													data?.pricePerFraction
-												)}
+												{data?.pricePerFraction}
 											</h3>
 										</div>
 										<div
@@ -263,12 +261,11 @@ export const PortfolioId = () => {
 													styles.figureBoxFigure
 												}
 											>
-												<UsdcIcon
-													className={styles.usdcIcon}
+												<AdaIcon
+													className={styles.adaIcon}
 												/>{" "}
-												{fromBigNumberToUSDC(
-													data?.pricePerFraction
-												) * data?.amountOwned}
+												{data?.pricePerFraction *
+													data?.amountOwned}
 											</h3>
 										</div>
 									</div>
@@ -400,12 +397,10 @@ export const PortfolioId = () => {
 											Price per unit
 										</h6>
 										<h3 className={styles.figureBoxFigure}>
-											<UsdcIcon
-												className={styles.usdcIcon}
+											<AdaIcon
+												className={styles.adaIcon}
 											/>{" "}
-											{fromBigNumberToUSDC(
-												data?.pricePerFraction
-											)}
+											{data?.pricePerFraction}
 										</h3>
 									</div>
 									<div className={styles.figureBoxContents}>
@@ -413,12 +408,11 @@ export const PortfolioId = () => {
 											Total value owned
 										</h6>
 										<h3 className={styles.figureBoxFigure}>
-											<UsdcIcon
-												className={styles.usdcIcon}
+											<AdaIcon
+												className={styles.adaIcon}
 											/>{" "}
-											{fromBigNumberToUSDC(
-												data?.pricePerFraction
-											) * data?.amountOwned}
+											{data?.pricePerFraction *
+												data?.amountOwned}
 										</h3>
 									</div>
 								</div>

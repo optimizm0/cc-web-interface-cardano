@@ -1,75 +1,99 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { Button } from "../../../../components";
-// import { useNavigate } from "react-router-dom";
-// import toast from "react-hot-toast";
-// import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { DiscordIcon, FacebookIcon, GoogleIcon } from "src/assets";
-import { addUser } from "src/redux/slices";
+import { addUser, removeUser } from "src/redux/slices";
 import { signMessage } from "src/utils";
 import toast from "react-hot-toast";
 import nufiCoreSdk from "@nufi/dapp-client-core";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
-const isLoading = false;
+import { useLoginOnServerWithNufiMutation } from "src/redux/slices";
 
 export const SigninForm = () => {
-	// const [publicKeyHex, setPublicKeyHex] = useState(null);
-	// const [signatureHex, setSignatureHex] = useState(null);
-	// const [loginOnServerWithNufi, { isLoading }] =
-	// 	useLoginOnServerWithNufiMutation();
+	const [publicKeyHex, setPublicKeyHex] = useState(null);
+	const [userData, setUserData] = useState(null);
+	const [isLogining, setIsLogining] = useState(false);
+	const [loginOnServerWithNufi, { isLoading }] =
+		useLoginOnServerWithNufiMutation();
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const signIn = async () => {
-		// const signedMessage = await signMessage("Hello, Welcome to Chaincrib!");
-		// console.log(signedMessage, "signedMessage");
-		await signMessage();
+		setIsLogining(true);
+		const address = await signMessage();
 
-		// if (signedData) {
-		// 	setPublicKeyHex(signedData?.key);
-		// 	setSignatureHex(signedData?.signature);
-		// 	return;
-		// }
+		if (address) {
+			setPublicKeyHex(address);
+		}
+		setIsLogining(false);
 	};
 
+	nufiCoreSdk.onSocialLoginInfoChanged((data) => {
+		if (data) {
+			setUserData(data);
+		} else {
+			dispatch(removeUser());
+			window.location.replace("/");
+		}
+	});
+
 	useEffect(() => {
-		nufiCoreSdk.onSocialLoginInfoChanged((data) => {
-			if (data) {
-				dispatch(addUser(data));
-				toast.success("Login succesful!");
-				navigate("/dashboard");
-			}
-			// Store data in your app
-			// if (publicKeyHex && signatureHex) {
-			// 	loginOnServerWithNufi({
-			// 		email: "eobumma@gmail.com",
-			// 		message: MESSAGE,
-			// 		publicKeyHex,
-			// 		signatureHex,
-			// 	})
-			// 		.then((res) => {
-			// 			console.log(res, "result");
-			// 		})
-			// 		.catch((error) => {
-			// 			console.log(error, "Something went wrong!");
-			// 		});
-			// }
-		});
-	}, [dispatch, navigate]);
+		if (publicKeyHex && userData) {
+			setIsLogining(true);
+			loginOnServerWithNufi({
+				email: userData?.email,
+				publicKeyHex,
+			})
+				.then((res) => {
+					if (res?.data) {
+						console.log(
+							{
+								...res?.data?.data,
+								user: {
+									...res?.data?.data?.user,
+									wallet: publicKeyHex,
+								},
+							},
+							"stored valuex"
+						);
+						dispatch(
+							addUser({
+								...res?.data?.data,
+								user: {
+									...res?.data?.data?.user,
+									wallet: publicKeyHex,
+								},
+							})
+						);
+						toast.success("Login succesful!");
+						navigate("/dashboard");
+					} else {
+						toast.error("Something went wrong!");
+					}
+				})
+				.catch(() => {
+					toast.error("Something went wrong!");
+				})
+				.finally(() => {
+					setUserData(null);
+					setPublicKeyHex(null);
+					setIsLogining(false);
+				});
+		}
+	}, [dispatch, loginOnServerWithNufi, navigate, publicKeyHex, userData]);
 
 	return (
 		<>
 			{/* {loading ? <AppLoader /> : null} */}
 			<div className={styles.form}>
 				<Button
-					disabled={isLoading}
+					disabled={isLoading || isLogining}
 					onClick={signIn}
 					className={styles.defaultSignInButton}
 				>
-					{isLoading ? (
+					{isLoading || isLogining ? (
 						"Loading..."
 					) : (
 						<div className={styles.socialProvidersContainer}>

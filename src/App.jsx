@@ -15,8 +15,13 @@ import {
 } from "./routes";
 import nufiCoreSdk from "@nufi/dapp-client-core";
 import { initNufiDappCardanoSdk } from "@nufi/dapp-client-cardano";
+import { useDispatch } from "react-redux";
+import { removeUser } from "./redux/slices";
 
-nufiCoreSdk.init("https://wallet-testnet-staging.nu.fi");
+nufiCoreSdk.init("https://wallet-testnet-staging.nu.fi", {
+	responsive: true,
+	colorMode: "dark" | "light",
+});
 
 const router = createBrowserRouter([
 	{ path: "/signin", element: <Signin /> },
@@ -61,9 +66,18 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+	const dispatch = useDispatch();
+
 	useEffect(() => {
 		initNufiDappCardanoSdk(nufiCoreSdk, "sso");
 	}, []);
+
+	nufiCoreSdk.onSocialLoginInfoChanged((data) => {
+		if (!data) {
+			dispatch(removeUser());
+			window.location.replace("/");
+		}
+	});
 
 	return (
 		<>

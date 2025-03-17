@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@emurgo/cardano-serialization-lib-asmjs':
+    specifier: ^14.1.1
+    version: 14.1.1
   '@emurgo/cardano-serialization-lib-browser':
     specifier: ^14.1.1
     version: 14.1.1
@@ -319,6 +322,10 @@ packages:
       '@babel/helper-validator-identifier': 7.24.6
       to-fast-properties: 2.0.0
     dev: true
+
+  /@emurgo/cardano-serialization-lib-asmjs@14.1.1:
+    resolution: {integrity: sha512-Q2HVpPRt417Quxv3qagGWbkJQU8SiQCl1K/344ZtQMwsLoqTfRlCNzmSWMBN7jyBxbtKoh+vdbSiLqwG1NAjYg==}
+    dev: false
 
   /@emurgo/cardano-serialization-lib-browser@14.1.1:
     resolution: {integrity: sha512-/zGHQoXJCQw0yyEdoVQMDlSsyvaCap2lNVKEu+GTi1pwYopn6K3/SntrDFW5/gIMireDwY4+kZcPvXwIBZnMZA==}

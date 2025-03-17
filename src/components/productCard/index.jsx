@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
-import { UsdcIcon } from "../../assets";
-import { addEllipsis, fromBigNumberToUSDC } from "src/utils";
+import { AdaIcon } from "../../assets";
+import { addEllipsis } from "src/utils";
 
 export const ProductCard = ({
 	image,
@@ -42,10 +42,8 @@ export const ProductCard = ({
 				<div>
 					<h4 className={styles.unitValueHeader}>Unit value</h4>
 					<div className={styles.unitValueContainer}>
-						<UsdcIcon />
-						<h1 className={styles.unitValue}>
-							{fromBigNumberToUSDC(pricePerFraction)}
-						</h1>
+						<AdaIcon />
+						<h1 className={styles.unitValue}>{pricePerFraction}</h1>
 					</div>
 				</div>
 			</div>

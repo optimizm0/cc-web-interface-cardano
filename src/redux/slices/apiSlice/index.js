@@ -40,7 +40,7 @@ export const chainCribApi = createApi({
 		}),
 		getUser: build.query({
 			query: () => ({
-				url: "/users/me",
+				url: "/cardano/user/me",
 				method: "GET",
 			}),
 			providesTags: ["User"],
@@ -54,16 +54,40 @@ export const chainCribApi = createApi({
 		}),
 		getUserCribs: build.query({
 			query: ({ page = 1, limit = 12 }) => ({
-				url: `/cribs/user?limit=${limit}&page=${page}&sort=desc`,
+				url: `/property/user?limit=${limit}&page=${page}&sort=desc`,
 				method: "GET",
 			}),
+			transformResponse: (response) => {
+				return {
+					message: "Successfully Fetched Cribs",
+					success: true,
+					data: response?.properties,
+					meta: {
+						total: response?.total,
+						limit: Number(response?.limit),
+						page: Number(response?.page),
+					},
+				};
+			},
 			providesTags: ["Cribs"],
 		}),
 		getCribs: build.query({
 			query: (page = 1) => ({
-				url: `/cribs?limit=12&page=${page}&sort=desc`,
+				url: `/property?limit=12&page=${page}&sort=desc`,
 				method: "GET",
 			}),
+			transformResponse: (response) => {
+				return {
+					message: "Successfully Fetched Cribs",
+					success: true,
+					data: response?.properties,
+					meta: {
+						total: response?.total,
+						limit: Number(response?.limit),
+						page: Number(response?.page),
+					},
+				};
+			},
 		}),
 		sendLoginEmail: build.mutation({
 			query: (body) => ({
@@ -73,16 +97,16 @@ export const chainCribApi = createApi({
 			}),
 		}),
 		cribPurchase: build.mutation({
-			query: ({ id, ...rest }) => ({
-				url: `transactions/purchase/${id}`,
+			query: (body) => ({
+				url: `/property/buy`,
 				method: "POST",
-				body: rest,
+				body,
 			}),
 			invalidatesTags: ["Cribs", "User"],
 		}),
 		getTransactions: build.query({
 			query: (page = 1) => ({
-				url: `/transactions/user?limit=12&page=${page}&sort=desc`,
+				url: `/cardano/transactions/user?limit=12&page=${page}&sort=desc`,
 				method: "GET",
 			}),
 		}),

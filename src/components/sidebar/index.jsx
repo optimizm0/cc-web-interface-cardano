@@ -1,29 +1,35 @@
+import { useState } from "react";
 import styles from "./styles.module.css";
-import { Close, TransactionIcon } from "../../assets";
+import { Close } from "../../assets";
 import { Button } from "../button";
 import { ConnectedWalletButton } from "../connectedWalletButton";
-import { fromBigNumberToUSDC, magicInstance } from "src/utils";
 import { useGetUserQuery } from "src/redux/slices";
 import { SkeletonLoader } from "../skeletonLoader";
-import { useState } from "react";
 import toast from "react-hot-toast";
+import { getNuFiAdaBalance } from "src/utils";
 
 export const Sidebar = ({ showSmallSideBar = false, setShowSmallSideBar }) => {
-	const [isLoadingMagic, setIsLoadingMagic] = useState(false);
+	const [walletBalance, setWalletBalance] = useState(null);
+	const [loadingWalletBalance, setLoadingWalletBalance] = useState(true);
 	const { data, isLoading, isFetching } = useGetUserQuery("", {
 		refetchOnFocus: true,
 	});
 
 	const buyUSDC = async () => {
-		try {
-			setIsLoadingMagic(true);
-			await magicInstance.wallet.showUI();
-		} catch {
-			toast.error("Something went wrong!");
-		} finally {
-			setIsLoadingMagic(false);
-		}
+		toast.success(
+			"Click on NuFi Connect widet at the bottom left to buy ADA!",
+			{}
+		);
 	};
+
+	// Call the function and log the balance
+	getNuFiAdaBalance()
+		.then((balance) => {
+			if (balance !== null) {
+				setWalletBalance(balance.toFixed(3));
+			}
+		})
+		.finally(() => setLoadingWalletBalance(false));
 
 	return (
 		<>
@@ -33,37 +39,29 @@ export const Sidebar = ({ showSmallSideBar = false, setShowSmallSideBar }) => {
 					className={styles.connectedWalletButton}
 				/>
 				<div className={styles.balanceHolder}>
-					<h4 className={styles.headerTitle}>Total USDC balance</h4>
+					<h4 className={styles.headerTitle}>Total ADA balance</h4>
 					<div className={styles.balance}>
-						{!isLoading || !isFetching ? (
+						{!loadingWalletBalance ? (
 							<h3 className={styles.headerBalance}>
-								{fromBigNumberToUSDC(data?.data?.usdcBalance)}{" "}
-								<span>USDC</span>
+								{walletBalance} <span>ADA</span>
 							</h3>
 						) : (
 							<SkeletonLoader />
 						)}
 					</div>
 					<p className={styles.infoParagraph}>
-						Don&apos;t have enough USDC? Get more by clicking on the
+						Don&apos;t have enough ADA? Get more by clicking on the
 						button below
 					</p>
-					<Button
-						onClick={buyUSDC}
-						disabled={isLoading || isLoadingMagic || isFetching}
-					>
-						{isLoadingMagic ? "Loading..." : "Buy USDC"}
-					</Button>
+					<Button onClick={buyUSDC}>Buy ADA</Button>
 				</div>
 				<div className={styles.balanceHolder}>
 					<h4 className={styles.headerTitle}>Total asset value</h4>
 					<div className={styles.balance}>
 						{!isLoading || !isFetching ? (
 							<h3 className={styles.headerBalance}>
-								{fromBigNumberToUSDC(
-									data?.data?.totalAssetBalance
-								)}{" "}
-								<span>USDC</span>
+								{data?.data?.totalAssetBalance || "0"}{" "}
+								<span>ADA</span>
 							</h3>
 						) : (
 							<SkeletonLoader />
@@ -75,7 +73,8 @@ export const Sidebar = ({ showSmallSideBar = false, setShowSmallSideBar }) => {
 					<div className={styles.balance}>
 						{!isLoading || !isFetching ? (
 							<h3 className={styles.headerBalance}>
-								{data?.data?.totalCoOwned}
+								{data?.data?.totalCoOwned || "0"}{" "}
+								<span>ADA</span>
 							</h3>
 						) : (
 							<SkeletonLoader />
@@ -103,36 +102,23 @@ export const Sidebar = ({ showSmallSideBar = false, setShowSmallSideBar }) => {
 					/>
 					<div className={styles.balanceHolder}>
 						<h4 className={styles.headerTitle}>
-							Total USDC balance
+							Total ADA balance
 						</h4>
 						<div className={styles.balance}>
-							{!isLoading || !isFetching ? (
+							{!loadingWalletBalance ? (
 								<h3 className={styles.headerBalance}>
-									{fromBigNumberToUSDC(
-										data?.data?.usdcBalance
-									)}
-									<span>USDC</span>
+									{walletBalance}
+									<span>ADA</span>
 								</h3>
 							) : (
 								<SkeletonLoader />
 							)}
 						</div>
-						<div className={styles.transactionBalanceHolder}>
-							<TransactionIcon />
-							<h5 className={styles.headerBalanceSmall}>
-								0.00 <span>$</span>
-							</h5>
-						</div>
 						<p className={styles.infoParagraph}>
-							Don&apos;t have enough USDC? Get more by clicking on
+							Don&apos;t have enough ADA? Get more by clicking on
 							the button below
 						</p>
-						<Button
-							onClick={buyUSDC}
-							disabled={isLoading || isLoadingMagic || isFetching}
-						>
-							{isLoadingMagic ? "Loading..." : "Buy USDC"}
-						</Button>
+						<Button onClick={buyUSDC}>Buy ADA</Button>
 					</div>
 					<div className={styles.balanceHolder}>
 						<h4 className={styles.headerTitle}>
@@ -141,10 +127,8 @@ export const Sidebar = ({ showSmallSideBar = false, setShowSmallSideBar }) => {
 						<div className={styles.balance}>
 							{!isLoading || !isFetching ? (
 								<h3 className={styles.headerBalance}>
-									{fromBigNumberToUSDC(
-										data?.data?.totalAssetBalance
-									)}
-									<span>USDC</span>
+									{data?.data?.totalAssetBalance || "0"}
+									<span>ADA</span>
 								</h3>
 							) : (
 								<SkeletonLoader />

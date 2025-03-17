@@ -1,34 +1,13 @@
-import { Magic } from "magic-sdk";
 import {
-	CHAIN_CRIB_ADDRESS,
-	NETWORK_ID,
+	addressBech32SendADA,
+	PROTOCOLPARAMS,
 	USDC_BASE_SEPOLIA_ADDRESS,
 	USDC_DECIMALS,
 } from "./constants";
-import { USDC_BASE_SEPOLIA_ABI } from "./usdc-abi";
-import { ethers } from "ethers";
-// import { Buffer } from "buffer";
+import { Buffer } from "buffer";
+import * as CardanoWasm from "@emurgo/cardano-serialization-lib-asmjs";
 
-// Setting network to point to Base testnet
-const magicInstance = new Magic("pk_live_4A67BA442565C356", {
-	network: {
-		rpcUrl: "https://sepolia.base.org",
-		chainId: 84532,
-	},
-});
-
-const loginWithMagic = async (emailAddress, showUI) => {
-	try {
-		const did = await magicInstance.auth.loginWithEmailOTP({
-			email: emailAddress,
-			showUI: showUI,
-		});
-		return `${did}`;
-	} catch (error) {
-		console.error(error);
-		// Handle errors if required!
-	}
-};
+var UTXOs;
 
 const formatCryptoAddress = (address) => {
 	if (!address) {
@@ -50,74 +29,6 @@ const addEllipsis = (str, maxLength) => {
 	}
 	return str;
 };
-
-const getUSDCSignPayload = async ({ deadline, price, nonce, wallet }) => {
-	const value = price;
-
-	return {
-		domain: {
-			chainId: NETWORK_ID,
-			name: "USDC",
-			verifyingContract: USDC_BASE_SEPOLIA_ADDRESS,
-			version: "2",
-		},
-		message: {
-			contents: `Please sign this message to pay ${price} USDC for your new crib!`,
-			owner: wallet,
-			spender: CHAIN_CRIB_ADDRESS,
-			value,
-			nonce,
-			deadline,
-		},
-		primaryType: "Permit",
-		types: {
-			EIP712Domain: [
-				{ name: "name", type: "string" },
-				{ name: "version", type: "string" },
-				{ name: "chainId", type: "uint256" },
-				{ name: "verifyingContract", type: "address" },
-			],
-			Permit: [
-				{ name: "owner", type: "address" },
-				{ name: "spender", type: "address" },
-				{ name: "value", type: "uint256" },
-				{ name: "nonce", type: "uint256" },
-				{ name: "deadline", type: "uint256" },
-			],
-		},
-	};
-};
-
-export async function getUSDCPermitSignatureAndDeadline({ price }) {
-	const provider = new ethers.BrowserProvider(magicInstance.rpcProvider);
-
-	const USDC_Contract = new ethers.Contract(
-		USDC_BASE_SEPOLIA_ADDRESS,
-		USDC_BASE_SEPOLIA_ABI,
-		provider
-	);
-
-	const signer = await provider.getSigner();
-	const wallet = await signer.getAddress();
-
-	const nonce = Number(await USDC_Contract.nonces(wallet));
-	const deadline = Math.floor(Date.now() / 1000) + 3600;
-
-	const signedPayload = await getUSDCSignPayload({
-		deadline,
-		price,
-		nonce,
-		wallet,
-	});
-
-	// Request the signature via Magic's rpcProvider to ensure the Magic UI pops up
-	const signature = await magicInstance.rpcProvider.request({
-		method: "eth_signTypedData_v4",
-		params: [wallet, signedPayload],
-	});
-
-	return { signature, deadline };
-}
 
 const fromBigNumberToUSDC = (number) => {
 	if (number) {
@@ -162,27 +73,257 @@ const signMessage = async () => {
 		const api = await window.cardano.nufiSSO.enable();
 		// Get the user's Cardano address
 		const addresses = await api.getUsedAddresses();
+		const address = addresses[0];
 
-		if (!addresses.length) {
-			throw new Error("No Cardano addresses found in NuFi.");
+		if (address) {
+			const addressBytes = Buffer.from(addresses?.[0], "hex");
+			const formattedAddress =
+				CardanoWasm.Address.from_bytes(addressBytes);
+			return formattedAddress.to_bech32();
 		}
-
-		// Convert message to hex
-		// const messageHex = Buffer.from(MESSAGE, "utf8").toString("hex");
-
-		// Sign the message
-		// const signedData = await api.signData(addresses[0], messageHex);
-
-		// return { ...signedData, address: addresses[0] }; // Returns { signature, key, address }
 	} catch (error) {
 		console.error("Error signing message:", error);
 		throw error;
 	}
 };
 
+const getNuFiAdaBalance = async () => {
+	if (!window.cardano || !window.cardano.nufiSSO) {
+		console.error("NuFi Wallet is not installed or unavailable.");
+		return null;
+	}
+
+	try {
+		// Enable NuFi Wallet
+		const walletAPI = await window.cardano.nufiSSO.enable();
+
+		// Fetch UTXOs (Unspent Transaction Outputs)
+		const utxos = await walletAPI.getUtxos();
+
+		if (!utxos.length) {
+			console.warn("No UTXOs found. ADA balance is 0.");
+			return 0;
+		}
+
+		// Convert UTXO hex to usable format
+		let totalLovelace = BigInt(0);
+		for (const utxoHex of utxos) {
+			const utxoBytes = Buffer.from(utxoHex, "hex");
+			const utxo =
+				CardanoWasm.TransactionUnspentOutput.from_bytes(utxoBytes);
+			console.log(utxo.output().amount().coin().to_str(), "TLL");
+			totalLovelace += BigInt(utxo.output().amount().coin().to_str()); // Convert Lovelace to ADA
+		}
+
+		// Convert Lovelace (1 ADA = 1,000,000 Lovelace)
+		const totalAda = Number(totalLovelace) / 1_000_000;
+		return totalAda;
+	} catch (error) {
+		console.error("Error fetching NuFi ADA balance:", error);
+		return null;
+	}
+};
+
+const initTransactionBuilder = async () => {
+	const txBuilder = CardanoWasm.TransactionBuilder.new(
+		CardanoWasm.TransactionBuilderConfigBuilder.new()
+			.fee_algo(
+				CardanoWasm.LinearFee.new(
+					CardanoWasm.BigNum.from_str(
+						PROTOCOLPARAMS.linearFee.minFeeA
+					),
+					CardanoWasm.BigNum.from_str(
+						PROTOCOLPARAMS.linearFee.minFeeB
+					)
+				)
+			)
+			.pool_deposit(
+				CardanoWasm.BigNum.from_str(PROTOCOLPARAMS.poolDeposit)
+			)
+			.key_deposit(CardanoWasm.BigNum.from_str(PROTOCOLPARAMS.keyDeposit))
+			.coins_per_utxo_byte(
+				CardanoWasm.BigNum.from_str(PROTOCOLPARAMS.coinsPerUtxoWord)
+			)
+			.max_value_size(PROTOCOLPARAMS.maxValSize)
+			.max_tx_size(PROTOCOLPARAMS.maxTxSize)
+			.prefer_pure_change(true)
+			.build()
+	);
+
+	return txBuilder;
+};
+
+// const getBalance = async () => {
+// 	try {
+// 		const wallet = await window.cardano.nufiSSO.enable();
+// 		const balanceCBORHex = await wallet.getBalance();
+
+// 		const balance = CardanoWasm.Value.from_bytes(
+// 			Buffer.from(balanceCBORHex, "hex")
+// 		)
+// 			.coin()
+// 			.to_str();
+// 		console.log(balance, "balance");
+// 	} catch (err) {
+// 		console.log(err);
+// 	}
+// };
+
+const getUtxos = async () => {
+	let Utxos = [];
+
+	try {
+		const wallet = await window.cardano.nufiSSO.enable();
+		const rawUtxos = await wallet.getUtxos();
+
+		for (const rawUtxo of rawUtxos) {
+			const utxo = CardanoWasm.TransactionUnspentOutput.from_bytes(
+				Buffer.from(rawUtxo, "hex")
+			);
+			const input = utxo.input();
+			const txid = Buffer.from(
+				input.transaction_id().to_bytes(),
+				"utf8"
+			).toString("hex");
+			const txindx = input.index();
+			const output = utxo.output();
+			const amount = output.amount().coin().to_str(); // ADA amount in lovelace
+			const multiasset = output.amount().multiasset();
+			let multiAssetStr = "";
+
+			if (multiasset) {
+				const keys = multiasset.keys(); // policy Ids of thee multiasset
+				const N = keys.len();
+				// console.log(`${N} Multiassets in the UTXO`)
+
+				for (let i = 0; i < N; i++) {
+					const policyId = keys.get(i);
+					const policyIdHex = Buffer.from(
+						policyId.to_bytes(),
+						"utf8"
+					).toString("hex");
+					// console.log(`policyId: ${policyIdHex}`)
+					const assets = multiasset.get(policyId);
+					const assetNames = assets.keys();
+					const K = assetNames.len();
+					// console.log(`${K} Assets in the Multiasset`)
+
+					for (let j = 0; j < K; j++) {
+						const assetName = assetNames.get(j);
+						const assetNameString = Buffer.from(
+							assetName.name(),
+							"utf8"
+						).toString();
+						const assetNameHex = Buffer.from(
+							assetName.name(),
+							"utf8"
+						).toString("hex");
+						const multiassetAmt = multiasset.get_asset(
+							policyId,
+							assetName
+						);
+						multiAssetStr += `+ ${multiassetAmt.to_str()} + ${policyIdHex}.${assetNameHex} (${assetNameString})`;
+						// console.log(assetNameString)
+						// console.log(`Asset Name: ${assetNameHex}`)
+					}
+				}
+			}
+
+			const obj = {
+				txid: txid,
+				txindx: txindx,
+				amount: amount,
+				str: `${txid} #${txindx} = ${amount}`,
+				multiAssetStr: multiAssetStr,
+				TransactionUnspentOutput: utxo,
+			};
+			Utxos.push(obj);
+			// console.log(`utxo: ${str}`)
+		}
+		UTXOs = Utxos;
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+const getTxUnspentOutputs = async () => {
+	let txOutputs = CardanoWasm.TransactionUnspentOutputs.new();
+	for (const utxo of UTXOs) {
+		txOutputs.add(utxo.TransactionUnspentOutput);
+	}
+	return txOutputs;
+};
+
+const buildTransaction = async (amount) => {
+	const wallet = await window.cardano.nufiSSO.enable();
+	const txBuilder = await initTransactionBuilder();
+	const raw = await wallet.getChangeAddress();
+	const changeAddress = CardanoWasm.Address.from_bytes(
+		Buffer.from(raw, "hex")
+	).to_bech32();
+	const shelleyOutputAddress =
+		CardanoWasm.Address.from_bech32(addressBech32SendADA);
+	const shelleyChangeAddress = CardanoWasm.Address.from_bech32(changeAddress);
+
+	txBuilder.add_output(
+		CardanoWasm.TransactionOutput.new(
+			shelleyOutputAddress,
+			CardanoWasm.Value.new(
+				CardanoWasm.BigNum.from_str(
+					Number(amount * 1_000_000).toString()
+				)
+			)
+		)
+	);
+
+	// Find the available UTXOs in the wallet and
+	// us them as Inputs
+	const txUnspentOutputs = await getTxUnspentOutputs();
+	txBuilder.add_inputs_from(txUnspentOutputs, 1);
+
+	// calculate the min fee required and send any change to an address
+	txBuilder.add_change_if_needed(shelleyChangeAddress);
+
+	// once the transaction is ready, we build it to get the tx body without witnesses
+	const txBody = txBuilder.build();
+
+	// Tx witness
+	const transactionWitnessSet = CardanoWasm.TransactionWitnessSet.new();
+
+	const tx = CardanoWasm.Transaction.new(
+		txBody,
+		CardanoWasm.TransactionWitnessSet.from_bytes(
+			transactionWitnessSet.to_bytes()
+		)
+	);
+
+	let txVkeyWitnesses = await wallet.signTx(
+		Buffer.from(tx.to_bytes(), "utf8").toString("hex"),
+		true
+	);
+
+	txVkeyWitnesses = CardanoWasm.TransactionWitnessSet.from_bytes(
+		Buffer.from(txVkeyWitnesses, "hex")
+	);
+
+	transactionWitnessSet.set_vkeys(txVkeyWitnesses.vkeys());
+
+	const signedTx = CardanoWasm.Transaction.new(
+		tx.body(),
+		transactionWitnessSet
+	);
+
+	return signedTx;
+};
+
+const signTransaction = async (amount) => {
+	await getUtxos();
+	const transaction = await buildTransaction(amount);
+	const transactionHex = transaction.to_hex();
+	return transactionHex;
+};
+
 export {
-	magicInstance,
-	loginWithMagic,
 	formatCryptoAddress,
 	addEllipsis,
 	USDC_BASE_SEPOLIA_ADDRESS,
@@ -191,4 +332,6 @@ export {
 	formatDate,
 	signMessage,
 	MESSAGE,
+	getNuFiAdaBalance,
+	signTransaction,
 };

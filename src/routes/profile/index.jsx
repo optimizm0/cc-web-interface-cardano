@@ -9,8 +9,10 @@ import {
 } from "src/redux/slices";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export const Profile = () => {
+	const address = useSelector((state) => state?.user?.value?.user?.wallet);
 	const [image, setImage] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
 	const [formData, setFormData] = useState({
@@ -31,7 +33,7 @@ export const Profile = () => {
 
 	function copyToClipboard() {
 		navigator.clipboard
-			.writeText(data?.data?.wallet)
+			.writeText(address)
 			.then(() => {
 				toast.success("Wallet address copied!");
 			})
@@ -228,7 +230,7 @@ export const Profile = () => {
 										</h2>
 										<div className="">
 											<Input
-												value={data?.data?.wallet || ""}
+												value={address || ""}
 												disabled
 											/>
 											<Button

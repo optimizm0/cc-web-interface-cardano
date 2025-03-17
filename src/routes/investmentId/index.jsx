@@ -1,24 +1,23 @@
 import { useState } from "react";
 import { Button, ConnectedWalletButton } from "../../components";
-import { UsdcIcon, ArrowWithLine, PropertyIcon } from "../../assets";
+import { AdaIcon, ArrowWithLine, PropertyIcon } from "../../assets";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-	fromBigNumberToUSDC,
-	getUSDCPermitSignatureAndDeadline,
-} from "src/utils";
+import { signTransaction } from "src/utils";
 import { chainCribApi, useCribPurchaseMutation } from "src/redux/slices";
 import styles from "./style.module.css";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export const InvestmentId = () => {
+	const address = useSelector((state) => state?.user?.value?.user?.wallet);
 	const [currentTab, setCurrentTab] = useState(0);
 	const [currentImage, setCurrentImage] = useState(0);
 	const [showMoreAbout, setShowMoreAbout] = useState(false);
 	const [showMoreFeatures, setShowMoreFeatures] = useState(false);
 	const [showToolTip, setShowToolTip] = useState(false);
 	const [fractions, setFractions] = useState(1);
-	const [isLoadingMagic, setIsLoadingMagic] = useState(false);
+	const [isLoadingNufi, setIsLoadingNufi] = useState(false);
 
 	const navigate = useNavigate();
 	const [cribPurchase, { isLoading }] = useCribPurchaseMutation();
@@ -29,14 +28,14 @@ export const InvestmentId = () => {
 
 	const handleGalleryLeft = () => {
 		if (currentImage === 0) {
-			setCurrentImage(2);
+			setCurrentImage(data?.altImages?.length - 1 || 0);
 			return;
 		}
 		setCurrentImage(currentImage - 1);
 	};
 
 	const handleGalleryRight = () => {
-		if (currentImage === 2) {
+		if (currentImage === data?.altImages?.length - 1) {
 			setCurrentImage(0);
 			return;
 		}
@@ -57,46 +56,49 @@ export const InvestmentId = () => {
 		}
 	};
 
-	const handlePurchase = async () => {
-		if (fractions < 1 || fractions > data?.totalAvailable) {
-			toast.error("Invalid fraction value!");
-			return;
-		}
-		setIsLoadingMagic(true);
-		const price = fractions * data?.pricePerFraction;
+	const handlePurchaseNew = async () => {
 		try {
-			const { signature, deadline } =
-				await getUSDCPermitSignatureAndDeadline({
-					price,
-				});
-			cribPurchase({
-				id: data?._id,
-				txSignature: signature,
-				fractions,
-				deadline,
-			})
-				.then((result) => {
-					if (result?.error) {
-						toast.error(
-							result?.error?.data?.message ||
-								"Couldn't make the purchase, try again!"
-						);
-						return;
-					}
-					dispatch(
-						chainCribApi.util.invalidateTags(["Cribs", "User"])
-					);
-					toast.success("Purchase successful!");
-					navigate("/portfolio");
-					return;
+			setIsLoadingNufi(true);
+			if (fractions < 1 || fractions > data?.totalAvailable) {
+				toast.error("Invalid fraction value!");
+				return;
+			}
+			const price = fractions * data?.pricePerFraction;
+			const signedTx = await signTransaction(price);
+			if (signedTx) {
+				cribPurchase({
+					propertyId: data?._id,
+					recieverAddress: address,
+					fractionsToBuy: fractions,
+					signedTx: signedTx,
 				})
-				.catch(() => {
-					toast.error("Couldn't make the purchase, try again!");
-				});
+					.then((result) => {
+						if (result?.error) {
+							toast.error(
+								result?.error?.data?.message ||
+									"Couldn't make the purchase, try again!"
+							);
+							return;
+						}
+						dispatch(
+							chainCribApi.util.invalidateTags(["Cribs", "User"])
+						);
+						toast.success("Purchase successful!");
+						navigate("/portfolio");
+						return;
+					})
+					.catch(() => {
+						toast.error("Couldn't make the purchase, try again!");
+					});
+			} else {
+				toast.error("Couldn't make the purchase, try again!");
+			}
 		} catch (error) {
-			toast.error("Couldn't make the purchase, try again!");
+			toast.error(
+				String(error) || "Couldn't make the purchase, try again!"
+			);
 		} finally {
-			setIsLoadingMagic(false);
+			setIsLoadingNufi(false);
 		}
 	};
 
@@ -266,15 +268,13 @@ export const InvestmentId = () => {
 													styles.figureBoxFigure
 												}
 											>
-												<UsdcIcon
-													className={styles.usdcIcon}
+												<AdaIcon
+													className={styles.adaIcon}
 													style={{
 														marginRight: ".8rem",
 													}}
 												/>
-												{fromBigNumberToUSDC(
-													data?.pricePerFraction
-												)}
+												{data?.pricePerFraction}
 											</h3>
 										</div>
 										<div
@@ -387,13 +387,13 @@ export const InvestmentId = () => {
 									</div>
 									<div className={styles.actionButtons}>
 										<Button
-											onClick={handlePurchase}
+											onClick={handlePurchaseNew}
 											disabled={
-												isLoading || isLoadingMagic
+												isLoading || isLoadingNufi
 											}
 											type="button"
 										>
-											{isLoading || isLoadingMagic
+											{isLoading || isLoadingNufi
 												? "Loading..."
 												: "Buy assets"}
 										</Button>
@@ -483,13 +483,11 @@ export const InvestmentId = () => {
 											Price per unit
 										</h6>
 										<h3 className={styles.figureBoxFigure}>
-											<UsdcIcon
-												className={styles.usdcIcon}
+											<AdaIcon
+												className={styles.adaIcon}
 												style={{ marginRight: ".8rem" }}
 											/>
-											{fromBigNumberToUSDC(
-												data?.pricePerFraction
-											)}
+											{data?.pricePerFraction}
 										</h3>
 									</div>
 									<div className={styles.figureBoxContents}>
@@ -562,11 +560,11 @@ export const InvestmentId = () => {
 								</div>
 								<div className={styles.actionButtons}>
 									<Button
-										onClick={handlePurchase}
-										disabled={isLoading || isLoadingMagic}
+										onClick={handlePurchaseNew}
+										disabled={isLoading || isLoadingNufi}
 										type="button"
 									>
-										{isLoading || isLoadingMagic
+										{isLoading || isLoadingNufi
 											? "Loading..."
 											: "Buy assets"}
 									</Button>
