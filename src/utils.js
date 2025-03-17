@@ -5,7 +5,7 @@ import {
 	USDC_DECIMALS,
 } from "./constants";
 import { Buffer } from "buffer";
-import * as CardanoWasm from "@emurgo/cardano-serialization-lib-asmjs";
+import * as CardanoWasm from "@emurgo/cardano-serialization-lib-browser";
 
 var UTXOs;
 
