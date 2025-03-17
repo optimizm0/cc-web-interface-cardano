@@ -1,11 +1,8 @@
-import { useState } from "react";
-import { Button, ConnectWalletModal } from "../../../../components";
+import { Button } from "../../../../components";
 import styles from "../../style.module.css";
 import { vault } from "../../../../assets";
 
 export const DashboardEmptyState = () => {
-	const [showModal, setShowModal] = useState(false);
-
 	return (
 		<>
 			<section className={styles.connectWallet}>
@@ -21,15 +18,9 @@ export const DashboardEmptyState = () => {
 						Connect your Cardano wallet to view your Chaincrib
 						dashboard and assets
 					</p>
-					<Button onClick={() => setShowModal(true)}>
-						Connect Wallet
-					</Button>
+					<Button>Connect Wallet</Button>
 				</div>
 			</section>
-			<ConnectWalletModal
-				closeModal={() => setShowModal(false)}
-				showModal={showModal}
-			/>
 		</>
 	);
 };

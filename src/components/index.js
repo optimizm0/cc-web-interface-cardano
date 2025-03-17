@@ -1,7 +1,6 @@
 export * from "./button";
 export * from "./input";
 export * from "./navbar";
-export * from "./connectWalletModal";
 export * from "./sidebar";
 export * from "./productCard";
 export * from "./search";
