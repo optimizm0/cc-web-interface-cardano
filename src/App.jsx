@@ -20,7 +20,7 @@ import { removeUser } from "./redux/slices";
 
 nufiCoreSdk.init("https://wallet-testnet-staging.nu.fi", {
 	responsive: true,
-	colorMode: "dark" | "light",
+	colorMode: "dark",
 });
 
 const router = createBrowserRouter([
