@@ -153,22 +153,6 @@ const initTransactionBuilder = async () => {
 	return txBuilder;
 };
 
-// const getBalance = async () => {
-// 	try {
-// 		const wallet = await window.cardano.nufiSSO.enable();
-// 		const balanceCBORHex = await wallet.getBalance();
-
-// 		const balance = CardanoWasm.Value.from_bytes(
-// 			Buffer.from(balanceCBORHex, "hex")
-// 		)
-// 			.coin()
-// 			.to_str();
-// 		console.log(balance, "balance");
-// 	} catch (err) {
-// 		console.log(err);
-// 	}
-// };
-
 const getUtxos = async () => {
 	let Utxos = [];
 
@@ -182,8 +166,7 @@ const getUtxos = async () => {
 			);
 			const input = utxo.input();
 			const txid = Buffer.from(
-				input.transaction_id().to_bytes(),
-				"utf8"
+				input.transaction_id().to_bytes()
 			).toString("hex");
 			const txindx = input.index();
 			const output = utxo.output();
@@ -192,39 +175,31 @@ const getUtxos = async () => {
 			let multiAssetStr = "";
 
 			if (multiasset) {
-				const keys = multiasset.keys(); // policy Ids of thee multiasset
+				const keys = multiasset.keys(); // policy Ids of the multiasset
 				const N = keys.len();
-				// console.log(`${N} Multiassets in the UTXO`)
 
 				for (let i = 0; i < N; i++) {
 					const policyId = keys.get(i);
 					const policyIdHex = Buffer.from(
-						policyId.to_bytes(),
-						"utf8"
+						policyId.to_bytes()
 					).toString("hex");
-					// console.log(`policyId: ${policyIdHex}`)
 					const assets = multiasset.get(policyId);
 					const assetNames = assets.keys();
 					const K = assetNames.len();
-					// console.log(`${K} Assets in the Multiasset`)
 
 					for (let j = 0; j < K; j++) {
 						const assetName = assetNames.get(j);
 						const assetNameString = Buffer.from(
-							assetName.name(),
-							"utf8"
+							assetName.name()
 						).toString();
 						const assetNameHex = Buffer.from(
-							assetName.name(),
-							"utf8"
+							assetName.name()
 						).toString("hex");
 						const multiassetAmt = multiasset.get_asset(
 							policyId,
 							assetName
 						);
 						multiAssetStr += `+ ${multiassetAmt.to_str()} + ${policyIdHex}.${assetNameHex} (${assetNameString})`;
-						// console.log(assetNameString)
-						// console.log(`Asset Name: ${assetNameHex}`)
 					}
 				}
 			}
@@ -238,11 +213,11 @@ const getUtxos = async () => {
 				TransactionUnspentOutput: utxo,
 			};
 			Utxos.push(obj);
-			// console.log(`utxo: ${str}`)
 		}
+
 		UTXOs = Utxos;
 	} catch (err) {
-		console.log(err);
+		console.log("Error fetching UTXOs:", err);
 	}
 };
 

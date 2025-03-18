@@ -74,7 +74,6 @@ export const Sidebar = ({ showSmallSideBar = false, setShowSmallSideBar }) => {
 						{!isLoading || !isFetching ? (
 							<h3 className={styles.headerBalance}>
 								{data?.data?.totalCoOwned || "0"}{" "}
-								<span>ADA</span>
 							</h3>
 						) : (
 							<SkeletonLoader />
@@ -141,7 +140,9 @@ export const Sidebar = ({ showSmallSideBar = false, setShowSmallSideBar }) => {
 						</h4>
 						<div className={styles.balance}>
 							{!isLoading || !isFetching ? (
-								<h3 className={styles.headerBalance}>0</h3>
+								<h3 className={styles.headerBalance}>
+									{data?.data?.totalCoOwned || "0"}{" "}
+								</h3>
 							) : (
 								<SkeletonLoader />
 							)}
