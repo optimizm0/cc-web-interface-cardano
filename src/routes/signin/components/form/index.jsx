@@ -48,16 +48,6 @@ export const SigninForm = () => {
 			})
 				.then((res) => {
 					if (res?.data) {
-						console.log(
-							{
-								...res?.data?.data,
-								user: {
-									...res?.data?.data?.user,
-									wallet: publicKeyHex,
-								},
-							},
-							"stored valuex"
-						);
 						dispatch(
 							addUser({
 								...res?.data?.data,

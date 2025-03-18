@@ -20,10 +20,6 @@ export const Transactions = () => {
 		setPage(page);
 	};
 
-	console.log("====================================");
-	console.log(data);
-	console.log("====================================");
-
 	return (
 		<main className={styles.main}>
 			<div className={styles.pageContainer}>

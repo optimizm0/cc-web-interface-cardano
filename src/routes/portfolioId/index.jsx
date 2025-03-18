@@ -35,7 +35,6 @@ export const PortfolioId = () => {
 		navigate(`/investment/${data._id}`, { state: data });
 	};
 
-	console.log(data, "dataxxxxxxxxsss");
 	return (
 		<main className={styles.main}>
 			<div className={styles.pageContainer}>

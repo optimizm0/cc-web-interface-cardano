@@ -111,7 +111,6 @@ const getNuFiAdaBalance = async () => {
 			const utxoBytes = Buffer.from(utxoHex, "hex");
 			const utxo =
 				CardanoWasm.TransactionUnspentOutput.from_bytes(utxoBytes);
-			console.log(utxo.output().amount().coin().to_str(), "TLL");
 			totalLovelace += BigInt(utxo.output().amount().coin().to_str()); // Convert Lovelace to ADA
 		}
 
