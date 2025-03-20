@@ -54,6 +54,7 @@ export const SigninForm = () => {
 								user: {
 									...res?.data?.data?.user,
 									wallet: publicKeyHex,
+									socialData: userData,
 								},
 							})
 						);

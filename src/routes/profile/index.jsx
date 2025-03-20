@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 
 export const Profile = () => {
 	const address = useSelector((state) => state?.user?.value?.user?.wallet);
+	const state = useSelector((state) => state?.user?.value?.user);
 	const [image, setImage] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
 	const [formData, setFormData] = useState({
@@ -144,12 +145,15 @@ export const Profile = () => {
 										accept="image/png, image/jpeg, image/jpg, image/webp"
 										onChange={handleImageChange}
 									/>
-									{imagePreview || data?.data?.imageUrl ? (
+									{imagePreview ||
+									data?.data?.imageUrl ||
+									state?.socialData?.profileImage ? (
 										<img
 											alt="profile-imagePreview"
 											src={
 												imagePreview ||
-												data?.data?.imageUrl
+												data?.data?.imageUrl ||
+												state?.socialData?.profileImage
 											}
 										/>
 									) : (
@@ -190,14 +194,26 @@ export const Profile = () => {
 									>
 										<Input
 											placeholder="First name"
-											value={formData?.firstName || ""}
+											value={
+												formData?.firstName ||
+												state?.socialData?.name?.split(
+													" "
+												)?.[0] ||
+												""
+											}
 											name="firstName"
 											onChange={handleChange}
 											required
 										/>
 										<Input
 											placeholder="Last name"
-											value={formData?.lastName || ""}
+											value={
+												formData?.lastName ||
+												state?.socialData?.name?.split(
+													" "
+												)?.[1] ||
+												""
+											}
 											name="lastName"
 											onChange={handleChange}
 											required
@@ -205,7 +221,11 @@ export const Profile = () => {
 										<Input
 											placeholder="Email"
 											disabled
-											value={data?.data?.email || ""}
+											value={
+												data?.data?.email ||
+												state?.socialData?.email ||
+												""
+											}
 										/>
 										<div
 											className={
@@ -228,7 +248,7 @@ export const Profile = () => {
 										</h2>
 										<div className="">
 											<Input
-												value={address || ""}
+												value={state?.wallet || ""}
 												disabled
 											/>
 											<Button
