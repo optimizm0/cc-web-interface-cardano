@@ -13,6 +13,7 @@ export const ProductCard = ({
 	className,
 	amountOwned,
 	totalAvailable,
+	fullWidth = false,
 	onClick = () => null,
 }) => {
 	return (
@@ -20,6 +21,7 @@ export const ProductCard = ({
 			className={`${styles.container} ${className}`}
 			onClick={onClick}
 			role="button"
+			style={{ width: fullWidth ? "100%" : "auto" }}
 		>
 			<div className={styles.imageContainer}>
 				<img src={image} alt={name} loading="eager" />

@@ -2,10 +2,9 @@
 	border-radius: 1.25rem;
 	border: 0.063rem solid var(--app-color-gray-g);
 	min-width: 15.369rem;
-	max-width: 80vw;
+	max-width: 90vw;
 	flex-shrink: 0;
 	cursor: pointer;
-	/* width: 100%; */
 }
 
 .imageContainer {

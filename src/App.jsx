@@ -21,6 +21,7 @@ import { removeUser } from "./redux/slices";
 nufiCoreSdk.init("https://wallet-testnet-staging.nu.fi", {
 	responsive: true,
 	colorMode: "dark",
+	zIndex: 9999,
 });
 
 const router = createBrowserRouter([

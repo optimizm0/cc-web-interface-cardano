@@ -49,6 +49,7 @@ export const Portfolio = () => {
 										className={styles.productCard}
 										key={item?._id || index}
 										{...item}
+										fullWidth
 										onClick={() =>
 											navigate(`/portfolio/${item._id}`, {
 												state: item,
