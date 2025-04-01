@@ -9,3 +9,4 @@ export * from "./connectedWalletButton";
 export * from "./loader";
 export * from "./skeletonLoader";
 export * from "./pagination";
+export * from "./scrollToTheTop";

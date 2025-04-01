@@ -8,6 +8,7 @@ import styles from "./style.module.css";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import nufiCoreSdk from "@nufi/dapp-client-core";
 
 export const InvestmentId = () => {
 	const address = useSelector((state) => state?.user?.value?.user?.wallet);
@@ -57,8 +58,9 @@ export const InvestmentId = () => {
 	};
 
 	const handlePurchaseNew = async () => {
+		setIsLoadingNufi(true);
+		const widgetApi = await nufiCoreSdk.getWidgetApi();
 		try {
-			setIsLoadingNufi(true);
 			if (fractions < 1 || fractions > data?.totalAvailable) {
 				toast.error("Invalid fraction value!");
 				return;
@@ -98,6 +100,7 @@ export const InvestmentId = () => {
 				String(error) || "Couldn't make the purchase, try again!"
 			);
 		} finally {
+			widgetApi.showWidget("closed");
 			setIsLoadingNufi(false);
 		}
 	};
@@ -389,11 +392,15 @@ export const InvestmentId = () => {
 										<Button
 											onClick={handlePurchaseNew}
 											disabled={
-												isLoading || isLoadingNufi
+												!data?.totalAvailable ||
+												isLoading ||
+												isLoadingNufi
 											}
 											type="button"
 										>
-											{isLoading || isLoadingNufi
+											{!data?.totalAvailable
+												? "Sold out!!"
+												: isLoading || isLoadingNufi
 												? "Loading..."
 												: "Buy assets"}
 										</Button>
@@ -561,10 +568,16 @@ export const InvestmentId = () => {
 								<div className={styles.actionButtons}>
 									<Button
 										onClick={handlePurchaseNew}
-										disabled={isLoading || isLoadingNufi}
+										disabled={
+											!data?.totalAvailable ||
+											isLoading ||
+											isLoadingNufi
+										}
 										type="button"
 									>
-										{isLoading || isLoadingNufi
+										{!data?.totalAvailable
+											? "Sold out!!"
+											: isLoading || isLoadingNufi
 											? "Loading..."
 											: "Buy assets"}
 									</Button>

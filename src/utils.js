@@ -6,6 +6,7 @@ import {
 } from "./constants";
 import { Buffer } from "buffer";
 import * as CardanoWasm from "@emurgo/cardano-serialization-lib-browser";
+import nufiCoreSdk from "@nufi/dapp-client-core";
 
 var UTXOs;
 
@@ -297,6 +298,13 @@ const signTransaction = async (amount) => {
 	return transactionHex;
 };
 
+const disconnectWallet = async () => {
+	const widgetApi = await nufiCoreSdk.getWidgetApi();
+	if (widgetApi) {
+		widgetApi.signOut();
+	}
+};
+
 export {
 	formatCryptoAddress,
 	addEllipsis,
@@ -308,4 +316,5 @@ export {
 	MESSAGE,
 	getNuFiAdaBalance,
 	signTransaction,
+	disconnectWallet,
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Hamburger, LogoFull, avatar } from "./assets";
-import { Navbar, Sidebar } from "./components";
+import { Navbar, ScrollToTop, Sidebar } from "./components";
 import { Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -15,6 +15,7 @@ const Scarford = () => {
 
 	return (
 		<>
+			<ScrollToTop />
 			<div className="mobile-navigations">
 				<button onClick={() => setShowSmallNav(true)}>
 					<Hamburger className="hamburger-icon" />

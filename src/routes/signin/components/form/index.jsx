@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { DiscordIcon, FacebookIcon, GoogleIcon } from "src/assets";
 import { addUser, removeUser } from "src/redux/slices";
-import { signMessage } from "src/utils";
+import { disconnectWallet, signMessage } from "src/utils";
 import toast from "react-hot-toast";
 import nufiCoreSdk from "@nufi/dapp-client-core";
 import { useLoginOnServerWithNufiMutation } from "src/redux/slices";
@@ -61,10 +61,12 @@ export const SigninForm = () => {
 						toast.success("Login succesful!");
 						navigate("/dashboard");
 					} else {
+						disconnectWallet();
 						toast.error("Something went wrong!");
 					}
 				})
 				.catch(() => {
+					disconnectWallet();
 					toast.error("Something went wrong!");
 				})
 				.finally(() => {
