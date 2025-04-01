@@ -141,7 +141,8 @@ body::-webkit-scrollbar:horizontal {
 
 @media all and (max-width: 768px) {
 	iframe#nufi-widget {
-		left: -8px;
+		left: -8px !important;
+		bottom: -8px !important;
 	}
 }
 
