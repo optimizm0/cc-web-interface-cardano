@@ -141,8 +141,7 @@ body::-webkit-scrollbar:horizontal {
 
 @media all and (max-width: 768px) {
 	iframe#nufi-widget {
-		overflow-y: scroll !important;
-		overscroll-behavior-y: contain !important;
+		left: -8px;
 	}
 }
 
