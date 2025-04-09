@@ -139,13 +139,6 @@ body::-webkit-scrollbar:horizontal {
 	color: var(--app-color-black-a);
 }
 
-@media all and (max-width: 768px) {
-	iframe#nufi-widget {
-		left: -8px !important;
-		bottom: -8px !important;
-	}
-}
-
 @media all and (min-width: 768px) {
 	.app-contents {
 		display: flex;
