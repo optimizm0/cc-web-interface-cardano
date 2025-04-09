@@ -19,7 +19,7 @@ import { useDispatch } from "react-redux";
 import { removeUser } from "./redux/slices";
 
 nufiCoreSdk.init("https://wallet-testnet-staging.nu.fi", {
-	// responsive: true,
+	responsive: true,
 	colorMode: "dark",
 	zIndex: 9999,
 });

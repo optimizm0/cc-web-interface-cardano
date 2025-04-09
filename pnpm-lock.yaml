@@ -9,11 +9,11 @@ dependencies:
     specifier: ^14.1.1
     version: 14.1.1
   '@nufi/dapp-client-cardano':
-    specifier: ^0.6.1
-    version: 0.6.1
+    specifier: ^0.6.2
+    version: 0.6.2
   '@nufi/dapp-client-core':
-    specifier: ^0.6.1
-    version: 0.6.1
+    specifier: ^0.6.2
+    version: 0.6.2
   '@nufi/sso-button-react':
     specifier: ^0.0.3
     version: 0.0.3(react-dom@18.3.1)(react@18.3.1)
@@ -792,14 +792,14 @@ packages:
       fastq: 1.17.1
     dev: true
 
-  /@nufi/dapp-client-cardano@0.6.1:
-    resolution: {integrity: sha512-RV3302cTcPL3psq7zbEiUca5Qx6f2oVaQ4eLF3n46q2PGYLTwbra8uSMcjVDU+PA6DpVBChSH4aXW2hZAXu8vw==}
+  /@nufi/dapp-client-cardano@0.6.2:
+    resolution: {integrity: sha512-KBLUUMYH/qPbNEiy6EU76Yv0wiskRB3FrcVxhZJTdKXmLCfIFkmrbLy+TXsXQ47qD358/BxI6RMmJyKKO3u+ww==}
     dependencies:
-      '@nufi/dapp-client-core': 0.6.1
+      '@nufi/dapp-client-core': 0.6.2
     dev: false
 
-  /@nufi/dapp-client-core@0.6.1:
-    resolution: {integrity: sha512-da0Q9ktJLSP4YvNccVoTITMUOK7oS5DsNtBzQPBhv0/UBZGxxTFiYodEo787H/7i5EsbhJj2+1HCfiH4Pfolag==}
+  /@nufi/dapp-client-core@0.6.2:
+    resolution: {integrity: sha512-p6hsJg/eY0UGHJXbuhy7yjREdtR0B558FTTa3MWb2pZT5inZyo1/k/i/5cny2IxMOjeXmmO6/SXu7Dpv/VXHbA==}
     dev: false
 
   /@nufi/sso-button-react@0.0.3(react-dom@18.3.1)(react@18.3.1):
