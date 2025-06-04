@@ -1,5 +1,6 @@
 import {
 	addressBech32SendADA,
+	MESSAGE,
 	PROTOCOLPARAMS,
 	USDC_BASE_SEPOLIA_ADDRESS,
 	USDC_DECIMALS,
@@ -62,8 +63,6 @@ function formatDate(isoDate) {
 	return "";
 }
 
-const MESSAGE = "Hello, Welcome to Chaincrib!";
-
 const signMessage = async () => {
 	if (!window.cardano || !window.cardano.nufiSSO) {
 		throw new Error("NuFi Wallet not found");
@@ -77,14 +76,28 @@ const signMessage = async () => {
 		const address = addresses[0];
 
 		if (address) {
-			const addressBytes = Buffer.from(addresses?.[0], "hex");
-			const formattedAddress =
-				CardanoWasm.Address.from_bytes(addressBytes);
-			return formattedAddress.to_bech32();
+			// Sign a message with the user's address
+			const signature = await api.signData(
+				address,
+				Buffer.from(MESSAGE, "utf8").toString("hex")
+			);
+			if (signature) {
+				return {
+					publicKeyHex: address,
+					signatureHex: signature?.signature,
+				};
+			} else {
+				throw new Error("Failed to sign message");
+			}
 		}
 	} catch (error) {
 		console.error("Error signing message:", error);
 		throw error;
+	} finally {
+		const widgetApi = await nufiCoreSdk.getWidgetApi();
+		if (widgetApi) {
+			widgetApi.showWidget("closed");
+		}
 	}
 };
 
@@ -313,7 +326,6 @@ export {
 	toBigNumberFromUSDC,
 	formatDate,
 	signMessage,
-	MESSAGE,
 	getNuFiAdaBalance,
 	signTransaction,
 	disconnectWallet,

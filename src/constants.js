@@ -32,3 +32,5 @@ export const PROTOCOLPARAMS = {
 
 export const addressBech32SendADA =
 	"addr_test1qq536uu67rmrw4f5mke2n442zcp0funjuycngmnfzvjcv4r6jf4dltzra9qk4dcu50snygj3kyhsy67cn6ul8hsn6kwsr0lga9";
+
+export const MESSAGE = "Hello, Welcome to Chaincrib!";

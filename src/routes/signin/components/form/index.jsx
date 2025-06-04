@@ -9,9 +9,10 @@ import { disconnectWallet, signMessage } from "src/utils";
 import toast from "react-hot-toast";
 import nufiCoreSdk from "@nufi/dapp-client-core";
 import { useLoginOnServerWithNufiMutation } from "src/redux/slices";
+import { MESSAGE } from "src/constants";
 
 export const SigninForm = () => {
-	const [publicKeyHex, setPublicKeyHex] = useState(null);
+	const [signInWalletDetails, setSignInWalletDetails] = useState(null);
 	const [userData, setUserData] = useState(null);
 	const [isLogining, setIsLogining] = useState(false);
 	const [loginOnServerWithNufi, { isLoading }] =
@@ -22,10 +23,10 @@ export const SigninForm = () => {
 
 	const signIn = async () => {
 		setIsLogining(true);
-		const address = await signMessage();
+		const signMessageDetails = await signMessage();
 
-		if (address) {
-			setPublicKeyHex(address);
+		if (signMessageDetails) {
+			setSignInWalletDetails(signMessageDetails);
 		}
 		setIsLogining(false);
 	};
@@ -40,11 +41,13 @@ export const SigninForm = () => {
 	});
 
 	useEffect(() => {
-		if (publicKeyHex && userData) {
+		if (signInWalletDetails && userData) {
 			setIsLogining(true);
 			loginOnServerWithNufi({
 				email: userData?.email,
-				publicKeyHex,
+				message: MESSAGE,
+				signatureHex: signInWalletDetails?.signatureHex,
+				publicKeyHex: signInWalletDetails?.publicKeyHex,
 			})
 				.then((res) => {
 					if (res?.data) {
@@ -53,7 +56,7 @@ export const SigninForm = () => {
 								...res?.data?.data,
 								user: {
 									...res?.data?.data?.user,
-									wallet: publicKeyHex,
+									wallet: signInWalletDetails?.publicKeyHex,
 									socialData: userData,
 								},
 							})
@@ -71,11 +74,17 @@ export const SigninForm = () => {
 				})
 				.finally(() => {
 					setUserData(null);
-					setPublicKeyHex(null);
+					setSignInWalletDetails(null);
 					setIsLogining(false);
 				});
 		}
-	}, [dispatch, loginOnServerWithNufi, navigate, publicKeyHex, userData]);
+	}, [
+		dispatch,
+		loginOnServerWithNufi,
+		navigate,
+		signInWalletDetails,
+		userData,
+	]);
 
 	return (
 		<>
