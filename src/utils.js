@@ -77,12 +77,16 @@ const signMessage = async () => {
 
 		if (address) {
 			// Sign a message with the user's address
+			const addressBytes = Buffer.from(addresses?.[0], "hex");
+			const formattedAddress =
+				CardanoWasm.Address.from_bytes(addressBytes).to_bech32();
 			const signature = await api.signData(
 				address,
 				Buffer.from(MESSAGE, "utf8").toString("hex")
 			);
 			if (signature) {
 				return {
+					formattedAddress,
 					publicKeyHex: address,
 					signatureHex: signature?.signature,
 				};

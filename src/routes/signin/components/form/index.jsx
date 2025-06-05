@@ -56,7 +56,7 @@ export const SigninForm = () => {
 								...res?.data?.data,
 								user: {
 									...res?.data?.data?.user,
-									wallet: signInWalletDetails?.publicKeyHex,
+									wallet: signInWalletDetails?.formattedAddress,
 									socialData: userData,
 								},
 							})
