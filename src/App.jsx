@@ -80,7 +80,7 @@ function App() {
 		const handleVisibilityChange = () => {
 			if (document.visibilityState === 'visible') {
 				const timeAway = Date.now() - lastActiveTime;
-				if (timeAway > 60000) {
+				if (timeAway > 1800000) {
 					disconnectWallet();
 					dispatch(removeUser());
 					window.location.replace("/");
