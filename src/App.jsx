@@ -1,5 +1,5 @@
+import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useEffect } from "react";
 import Scarford from "./scarford";
 import { Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -23,6 +23,8 @@ nufiCoreSdk.init("https://wallet-testnet-staging.nu.fi", {
 	colorMode: "dark",
 	zIndex: 9999,
 });
+
+initNufiDappCardanoSdk(nufiCoreSdk, "sso");
 
 const router = createBrowserRouter([
 	{ path: "/signin", element: <Signin /> },
@@ -66,12 +68,52 @@ const router = createBrowserRouter([
 	},
 ]);
 
+
 function App() {
 	const dispatch = useDispatch();
+	const [lastActivity, setLastActivity] = useState(Date.now());
 
 	useEffect(() => {
-		initNufiDappCardanoSdk(nufiCoreSdk, "sso");
-	}, []);
+		// Function to update last activity timestamp
+		const updateLastActivity = () => {
+			setLastActivity(Date.now());
+		};
+
+		// Add event listeners for user activity
+		const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+		events.forEach(event => {
+			window.addEventListener(event, updateLastActivity);
+		});
+
+		// Handle visibility change
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === 'visible') {
+				updateLastActivity();
+			}
+		};
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+
+		// Check for idle timeout every 10 seconds
+		const idleCheckInterval = setInterval(() => {
+			const currentTime = Date.now();
+			const idleTime = currentTime - lastActivity;
+			
+			// If idle for more than 30 minutes (1800000 ms) and tab is visible
+			if (idleTime > 1800000 && document.visibilityState === 'visible') {
+				dispatch(removeUser());
+				window.location.replace("/");
+			}
+		}, 60000); // Check every minute instead of every 10 seconds
+
+		// Cleanup event listeners and interval
+		return () => {
+			events.forEach(event => {
+				window.removeEventListener(event, updateLastActivity);
+			});
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
+			clearInterval(idleCheckInterval);
+		};
+	}, [dispatch, lastActivity]);
 
 	nufiCoreSdk.onSocialLoginInfoChanged((data) => {
 		if (!data) {

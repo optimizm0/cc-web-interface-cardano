@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 import { Close } from "../../assets";
 import { Button } from "../button";
@@ -22,14 +22,17 @@ export const Sidebar = ({ showSmallSideBar = false, setShowSmallSideBar }) => {
 		);
 	};
 
-	// Call the function and log the balance
-	getNuFiAdaBalance()
-		.then((balance) => {
-			if (balance !== null) {
-				setWalletBalance(balance.toFixed(3));
-			}
-		})
-		.finally(() => setLoadingWalletBalance(false));
+	useEffect(() => {
+			getNuFiAdaBalance()
+			.then((balance) => {
+				if (balance !== null) {
+					setWalletBalance(balance.toFixed(3));
+				}
+			})
+			.finally(() => setLoadingWalletBalance(false));
+	}, [])
+
+
 
 	return (
 		<>

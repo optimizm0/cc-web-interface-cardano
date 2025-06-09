@@ -11,12 +11,6 @@ export const ConnectedWalletButton = ({ className = {} }) => {
 	const address = useSelector((state) => state?.user?.value?.user?.wallet);
 	const [loading, setLoading] = useState(false);
 
-	const api = async () => {
-		setLoading(true);
-		await window.cardano.nufiSSO.enable();
-		setLoading(false);
-	};
-
 	const showWidget = async () => {
 		const widgetApi = await nufiCoreSdk.getWidgetApi();
 		const status = widgetApi.getWidgetVisibilityStatus();
@@ -27,10 +21,6 @@ export const ConnectedWalletButton = ({ className = {} }) => {
 			widgetApi.showWidget("closed");
 		}
 	};
-
-	useEffect(() => {
-		api();
-	}, []);
 
 	return (
 		<div className={`${styles.accountDetailsHolder} ${className}`}>
