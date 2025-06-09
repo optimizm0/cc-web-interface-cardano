@@ -72,11 +72,13 @@ const router = createBrowserRouter([
 function App() {
 	const dispatch = useDispatch();
 	const [lastActivity, setLastActivity] = useState(Date.now());
+	const [isIdle, setIsIdle] = useState(false);
 
 	useEffect(() => {
 		// Function to update last activity timestamp
 		const updateLastActivity = () => {
 			setLastActivity(Date.now());
+			setIsIdle(false);
 		};
 
 		// Add event listeners for user activity
@@ -97,8 +99,9 @@ function App() {
 			const currentTime = Date.now();
 			const idleTime = currentTime - lastActivity;
 			
-			// If idle for more than 30 minutes (1800000 ms) and tab is visible
-			if (idleTime > 60000 && document.visibilityState === 'visible') {
+			// If idle for more than 1 minute and tab is visible
+			if (idleTime > 60000 && document.visibilityState === 'visible' && !isIdle) {
+				setIsIdle(true);
 				dispatch(removeUser());
 				window.location.replace("/");
 			}
@@ -112,7 +115,7 @@ function App() {
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
 			clearInterval(idleCheckInterval);
 		};
-	}, [dispatch, lastActivity]);
+	}, [dispatch, lastActivity, isIdle]);
 
 	nufiCoreSdk.onSocialLoginInfoChanged((data) => {
 		if (!data) {
