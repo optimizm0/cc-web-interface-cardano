@@ -93,17 +93,16 @@ function App() {
 		};
 		document.addEventListener('visibilitychange', handleVisibilityChange);
 
-		// Check for idle timeout every 10 seconds
 		const idleCheckInterval = setInterval(() => {
 			const currentTime = Date.now();
 			const idleTime = currentTime - lastActivity;
 			
 			// If idle for more than 30 minutes (1800000 ms) and tab is visible
-			if (idleTime > 1800000 && document.visibilityState === 'visible') {
+			if (idleTime > 60000 && document.visibilityState === 'visible') {
 				dispatch(removeUser());
 				window.location.replace("/");
 			}
-		}, 60000); // Check every minute instead of every 10 seconds
+		}, 10000);
 
 		// Cleanup event listeners and interval
 		return () => {
