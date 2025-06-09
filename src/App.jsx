@@ -17,6 +17,7 @@ import nufiCoreSdk from "@nufi/dapp-client-core";
 import { initNufiDappCardanoSdk } from "@nufi/dapp-client-cardano";
 import { useDispatch } from "react-redux";
 import { removeUser } from "./redux/slices";
+import { disconnectWallet } from "./utils";
 
 nufiCoreSdk.init("https://wallet-testnet-staging.nu.fi", {
 	responsive: true,
@@ -71,48 +72,32 @@ const router = createBrowserRouter([
 
 function App() {
 	const dispatch = useDispatch();
-	const [lastActivity, setLastActivity] = useState(Date.now());
 
 	useEffect(() => {
-		// Function to update last activity timestamp
-		const updateLastActivity = () => {
-			setLastActivity(Date.now());
-		};
-
-		// Add event listeners for user activity
-		const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-		events.forEach(event => {
-			window.addEventListener(event, updateLastActivity);
-		});
+		let lastActiveTime = Date.now();
 
 		// Handle visibility change
 		const handleVisibilityChange = () => {
 			if (document.visibilityState === 'visible') {
-				updateLastActivity();
+				const timeAway = Date.now() - lastActiveTime;
+				if (timeAway > 60000) {
+					disconnectWallet();
+					dispatch(removeUser());
+					window.location.replace("/");
+				}
+			} else {
+				// Store the time when user leaves the page
+				lastActiveTime = Date.now();
 			}
 		};
+
 		document.addEventListener('visibilitychange', handleVisibilityChange);
 
-		const idleCheckInterval = setInterval(() => {
-			const currentTime = Date.now();
-			const idleTime = currentTime - lastActivity;
-			
-			// If idle for more than 30 minutes (1800000 ms) and tab is visible
-			if (idleTime > 60000 && document.visibilityState === 'visible') {
-				dispatch(removeUser());
-				window.location.replace("/");
-			}
-		}, 10000);
-
-		// Cleanup event listeners and interval
+		// Cleanup
 		return () => {
-			events.forEach(event => {
-				window.removeEventListener(event, updateLastActivity);
-			});
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
-			clearInterval(idleCheckInterval);
 		};
-	}, [dispatch, lastActivity]);
+	}, [dispatch]);
 
 	nufiCoreSdk.onSocialLoginInfoChanged((data) => {
 		if (!data) {
