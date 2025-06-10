@@ -233,6 +233,7 @@ const getUtxos = async () => {
 		}
 
 		UTXOs = Utxos;
+		return Utxos;
 	} catch (err) {
 		console.log("Error fetching UTXOs:", err);
 	}
@@ -257,29 +258,33 @@ const buildTransaction = async (amount) => {
 		CardanoWasm.Address.from_bech32(addressBech32SendADA);
 	const shelleyChangeAddress = CardanoWasm.Address.from_bech32(changeAddress);
 
+	// Add output with the specified amount
+	const outputAmount = CardanoWasm.Value.new(
+		CardanoWasm.BigNum.from_str(
+			Number(amount * 1_000_000).toString()
+		)
+	);
+	
 	txBuilder.add_output(
 		CardanoWasm.TransactionOutput.new(
 			shelleyOutputAddress,
-			CardanoWasm.Value.new(
-				CardanoWasm.BigNum.from_str(
-					Number(amount * 1_000_000).toString()
-				)
-			)
+			outputAmount
 		)
 	);
 
-	// Find the available UTXOs in the wallet and
-	// us them as Inputs
+	// Find the available UTXOs in the wallet and use them as Inputs
 	const txUnspentOutputs = await getTxUnspentOutputs();
-	txBuilder.add_inputs_from(txUnspentOutputs, 1);
+	
+	// Add inputs with a higher selection strategy
+	txBuilder.add_inputs_from(txUnspentOutputs, 2);  // Changed from 1 to 2 for more aggressive UTXO selection
 
-	// calculate the min fee required and send any change to an address
+	// Calculate min fee and add change output
 	txBuilder.add_change_if_needed(shelleyChangeAddress);
 
-	// once the transaction is ready, we build it to get the tx body without witnesses
+	// Build the transaction body
 	const txBody = txBuilder.build();
 
-	// Tx witness
+	// Create transaction witness set
 	const transactionWitnessSet = CardanoWasm.TransactionWitnessSet.new();
 
 	const tx = CardanoWasm.Transaction.new(
@@ -289,6 +294,7 @@ const buildTransaction = async (amount) => {
 		)
 	);
 
+	// Sign the transaction
 	let txVkeyWitnesses = await wallet.signTx(
 		Buffer.from(tx.to_bytes(), "utf8").toString("hex"),
 		true
@@ -309,7 +315,10 @@ const buildTransaction = async (amount) => {
 };
 
 const signTransaction = async (amount) => {
-	await getUtxos();
+	const utxos = await getUtxos();
+	if (!utxos) {
+		throw new Error("Failed to fetch UTXOs. Please try again.");
+	}
 	const transaction = await buildTransaction(amount);
 	const transactionHex = transaction.to_hex();
 	return transactionHex;

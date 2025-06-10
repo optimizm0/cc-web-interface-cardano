@@ -96,9 +96,11 @@ export const InvestmentId = () => {
 				toast.error("Couldn't make the purchase, try again!");
 			}
 		} catch (error) {
-			toast.error(
-				String(error) || "Couldn't make the purchase, try again!"
-			);
+			if (typeof error === 'string') {
+				toast.error(error);
+			} else {
+				toast.error("Couldn't make the purchase, try again!");
+			}
 		} finally {
 			widgetApi.showWidget("closed");
 			setIsLoadingNufi(false);
