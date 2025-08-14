@@ -388,6 +388,9 @@ export const InvestmentId = () => {
 													+
 												</button>
 											</div>
+											{	fractions ?	<p className={styles.fractionCost}>
+											<span>{fractions} unit(s)</span> of this property will cost you <span>{fractions * data?.pricePerFraction} ADA</span>.
+											</p> : ""}
 										</div>
 									</div>
 									<div className={styles.actionButtons}>
@@ -565,6 +568,9 @@ export const InvestmentId = () => {
 												+
 											</button>
 										</div>
+										{	fractions ?	<p className={styles.fractionCost}>
+											<span>{fractions} unit(s)</span> of this property will cost you <span>{fractions * data?.pricePerFraction} ADA</span>.
+											</p> : ""}
 									</div>
 								</div>
 								<div className={styles.actionButtons}>

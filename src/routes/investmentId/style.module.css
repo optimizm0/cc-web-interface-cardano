@@ -498,6 +498,19 @@
 	cursor: not-allowed;
 }
 
+.fractionCost {
+	font-family: "Source Sans 3", sans-serif;
+	font-size: 0.8rem;
+	line-height: 1.1rem;
+	margin: 0.5rem 0;
+}
+
+.fractionCost span {
+	color: var(--app-color-puprle-e);
+	font-weight: 600;
+
+}
+
 @media all and (min-width: 768px) {
 	.connectedWalletButton {
 		display: block;
