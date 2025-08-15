@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, ConnectedWalletButton } from "../../components";
 import { AdaIcon, ArrowWithLine, PropertyIcon } from "../../assets";
 import { useNavigate, useLocation } from "react-router-dom";
-import { signTransaction } from "src/utils";
+import { showWidget, signTransaction } from "src/utils";
 import { chainCribApi, useCribPurchaseMutation } from "src/redux/slices";
 import styles from "./style.module.css";
 import toast from "react-hot-toast";
@@ -389,7 +389,8 @@ export const InvestmentId = () => {
 												</button>
 											</div>
 											{	fractions ?	<p className={styles.fractionCost}>
-											<span>{fractions} unit(s)</span> of this property will cost you <span>{fractions * data?.pricePerFraction} ADA</span>.
+											<span>{fractions} unit(s)</span> of this property will cost you <span>{fractions * data?.pricePerFraction} ADA</span>. {" "}
+											<button onClick={showWidget}> Click to check current ADA balance.</button>
 											</p> : ""}
 										</div>
 									</div>
@@ -569,7 +570,8 @@ export const InvestmentId = () => {
 											</button>
 										</div>
 										{	fractions ?	<p className={styles.fractionCost}>
-											<span>{fractions} unit(s)</span> of this property will cost you <span>{fractions * data?.pricePerFraction} ADA</span>.
+											<span>{fractions} unit(s)</span> of this property will cost you <span>{fractions * data?.pricePerFraction} ADA</span>. {" "}
+											<button onClick={showWidget}>Click to check current ADA balance.</button>
 											</p> : ""}
 									</div>
 								</div>

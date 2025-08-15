@@ -324,6 +324,18 @@ const signTransaction = async (amount) => {
 	return transactionHex;
 };
 
+
+const showWidget = async () => {
+	const widgetApi = await nufiCoreSdk.getWidgetApi();
+	const status = widgetApi.getWidgetVisibilityStatus();
+
+	if (status === "closed") {
+		widgetApi.showWidget("opened");
+	} else {
+		widgetApi.showWidget("closed");
+	}
+};
+
 const disconnectWallet = async () => {
 	const widgetApi = await nufiCoreSdk.getWidgetApi();
 	if (widgetApi) {
@@ -341,5 +353,6 @@ export {
 	signMessage,
 	getNuFiAdaBalance,
 	signTransaction,
+	showWidget,
 	disconnectWallet,
 };

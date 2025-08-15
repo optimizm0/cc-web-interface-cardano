@@ -501,14 +501,23 @@
 .fractionCost {
 	font-family: "Source Sans 3", sans-serif;
 	font-size: 0.8rem;
-	line-height: 1.1rem;
+	line-height: 1.35rem;
 	margin: 0.5rem 0;
 }
 
 .fractionCost span {
 	color: var(--app-color-puprle-e);
 	font-weight: 600;
+}
 
+.fractionCost button {
+	display: inline-block;
+	background: inherit;
+	border: none;
+	cursor: pointer;
+	text-decoration: underline;
+font-weight: 600;
+font-size: .75rem;
 }
 
 @media all and (min-width: 768px) {

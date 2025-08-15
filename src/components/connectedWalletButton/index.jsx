@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./styles.module.css";
 import { Arrow, PowerIcon, avatar } from "../../assets";
-import { formatCryptoAddress } from "src/utils";
+import { formatCryptoAddress, showWidget } from "src/utils";
 import { useEffect } from "react";
 import nufiCoreSdk from "@nufi/dapp-client-core";
 import { useSelector } from "react-redux";
@@ -11,16 +11,6 @@ export const ConnectedWalletButton = ({ className = {} }) => {
 	const address = useSelector((state) => state?.user?.value?.user?.wallet);
 	const [loading, setLoading] = useState(false);
 
-	const showWidget = async () => {
-		const widgetApi = await nufiCoreSdk.getWidgetApi();
-		const status = widgetApi.getWidgetVisibilityStatus();
-
-		if (status === "closed") {
-			widgetApi.showWidget("opened");
-		} else {
-			widgetApi.showWidget("closed");
-		}
-	};
 
 	return (
 		<div className={`${styles.accountDetailsHolder} ${className}`}>
